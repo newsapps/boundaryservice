@@ -87,9 +87,9 @@ INSTALLED_APPS = (
     'django.contrib.gis',
     'django.contrib.sitemaps',
 
-    'tastypie'.
+    'tastypie',
 
-    'api',
+    'boundaries.apps.api',
 )
 
 # Predefined domain
