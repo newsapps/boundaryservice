@@ -1,0 +1,38 @@
+<VirtualHost *:80>
+    ServerName boundaries.chicagotribune.com
+    ServerAlias boundaries.apps.chicagotribune.com
+    ServerAlias www.boundaries.chicagotribune.com
+    ServerAlias www.boundaries.apps.chicagotribune.com
+    
+    SetEnvIf X-Forwarded-For "^163\.192\..*\..*" trib
+    <Location /> # until launch
+          Order Deny,Allow
+          Allow from all
+          # Allow from env=trib
+    </Location>
+    
+    Redirect permanent /favicon.ico http://media.apps.chicagotribune.com/boundaries/na_media/favicon.ico
+    
+    Alias /robots.txt /home/newsapps/sites/boundaries/repository/boundaries/assets/robots.txt
+
+    ErrorLog /home/newsapps/logs/boundaries.error.log
+    LogLevel warn
+
+    SetEnvIf X-Forwarded-For "^.*\..*\..*\..*" is-forwarder
+    LogFormat "%{X-Forwarded-For}i %l %u %t \"%r\" %>s %b \"%{Referer}i\" \"%{User-Agent}i\" %I %O" combinedio
+    LogFormat "[%h] %l %u %t \"%r\" %>s %b \"%{Referer}i\" \"%{User-Agent}i\" %I %O" combinedio2
+    CustomLog /home/newsapps/logs/boundaries.access.log combinedio env=is-forwarder
+    CustomLog /home/newsapps/logs/boundaries.access.log combinedio2 env=!is-forwarder
+
+    ServerSignature Off
+    
+    RewriteEngine on
+    # canonical hostname
+    RewriteCond %{HTTP_HOST} !^boundaries.chicagotribune.com [NC] 
+    RewriteRule ^/(.*)  http://boundaries.chicagotribune.com/$1 [L,R]
+    
+    DocumentRoot /home/newsapps/sites/boundaries/repository/boundaries/assets/
+    
+    RewriteCond %{REQUEST_URI} !/maintenance.html$ 
+    RewriteRule $ /maintenance.html [R=302,L]
+</VirtualHost>
