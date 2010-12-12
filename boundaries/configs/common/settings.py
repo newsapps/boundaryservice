@@ -86,6 +86,10 @@ INSTALLED_APPS = (
     'django.contrib.humanize',
     'django.contrib.gis',
     'django.contrib.sitemaps',
+
+    'tastypie'.
+
+    'api',
 )
 
 # Predefined domain
