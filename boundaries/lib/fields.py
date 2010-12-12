@@ -5,6 +5,7 @@ from datetime import datetime
 
 from django.core.serializers.json import DjangoJSONEncoder
 from django.db import models
+from django.utils import simplejson as json
 
 class ListField(models.TextField):
     """

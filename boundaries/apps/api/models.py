@@ -30,13 +30,13 @@ class BoundarySet(SluggedModel):
         """
         Print plural names.
         """
-        return self.name
+        return unicode(self.name)
 
 class Boundary(SluggedModel):
     """
     A boundary object, such as a Ward or Neighborhood.
     """
-    kind = models.CharField(max_length=64, db_index=True,
+    set = models.ForeignKey(BoundarySet, related_name='boundaries',
         help_text='A category, e.g. "Community Area".')
     external_id = models.CharField(max_length=64,
         help_text='The boundaries\' unique id in the source dataset, or a generated one.')
@@ -49,11 +49,9 @@ class Boundary(SluggedModel):
     
     objects = models.GeoManager()
     
-    __metadata = None
-    
     def __unicode__(self):
         """
         Print names are formatted like "Austin Community Area"
         and will slug like "austin-community-area".
         """
-        return unicode(" ".join((self.name, self.kind)))
+        return unicode(self.name)
