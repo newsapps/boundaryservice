@@ -53,3 +53,20 @@ class BoundaryResource(SluggedResource):
         resource_name = 'boundary'
         excludes = ['id', 'external_id', 'shape']
         allowed_methods = ['get']
+
+    def build_filters(self, filters=None):
+        """
+        Override build_filters to support geoqueries.
+        """
+        if filters is None:
+            filters = {}
+
+        orm_filters = super(BoundaryResource, self).build_filters(filters)
+
+        if 'contains' in filters:
+            lat, lon = filters['contains'].split(',')
+            wkt_pt = 'POINT(%s %s)' % (lon, lat)
+
+            orm_filters = {"shape__contains": wkt_pt}
+
+        return orm_filters
