@@ -97,6 +97,7 @@ class Command(NoArgsCommand):
 
                 Boundary.objects.create(
                     set=set,
+                    kind=config['singular'],
                     external_id=config['ider'](feature),
                     name=config['namer'](feature),
                     metadata=metadata,

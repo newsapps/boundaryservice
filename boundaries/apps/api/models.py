@@ -38,6 +38,8 @@ class Boundary(SluggedModel):
     """
     set = models.ForeignKey(BoundarySet, related_name='boundaries',
         help_text='A category, e.g. "Community Area".')
+    kind = models.CharField(max_length=64,
+        help_text='A copy of BoundarySet\'s "singular" value for purposes of slugging and inspection.')
     external_id = models.CharField(max_length=64,
         help_text='The boundaries\' unique id in the source dataset, or a generated one.')
     name = models.CharField(max_length=256, db_index=True,
@@ -45,7 +47,7 @@ class Boundary(SluggedModel):
     metadata = JSONField(blank=True,
         help_text='The complete contents of the attribute table for this boundary in the source , structured as json.')
     shape = models.MultiPolygonField(srid=4269,
-        help_text='The geometry of this boundary in EPSG:4269.')
+        help_text='The geometry of this boundary in EPSG:4269 projection.')
     
     objects = models.GeoManager()
     
@@ -54,4 +56,4 @@ class Boundary(SluggedModel):
         Print names are formatted like "Austin Community Area"
         and will slug like "austin-community-area".
         """
-        return unicode(self.name)
+        return unicode('%s %s' % (self.name, self.kind))
