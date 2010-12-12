@@ -1,6 +1,8 @@
 from django.conf.urls.defaults import url
 from tastypie import fields
+from tastypie.bundle import Bundle
 from tastypie.resources import ModelResource
+from tastypie.serializers import Serializer
 
 from boundaries.apps.api.models import BoundarySet, Boundary
 
@@ -9,11 +11,34 @@ class SluggedResource(ModelResource):
     ModelResource subclass that handles looking up models by slugs rather than IDs.
     """
     def override_urls(self):
+        """
+        Add slug-based url pattern.
+        """
         return [
             url(r"^(?P<resource_name>%s)/(?P<slug>[\w\d_.-]+)/$" % self._meta.resource_name, self.wrap_view('dispatch_detail'), name="api_dispatch_detail"),
             ]
 
+    def get_resource_uri(self, bundle_or_obj):
+        """
+        Override URI generation to use slugs.
+        """
+        kwargs = {
+            'resource_name': self._meta.resource_name,
+        }
+        
+        if isinstance(bundle_or_obj, Bundle):
+            kwargs['slug'] = bundle_or_obj.obj.slug
+        else:
+            kwargs['slug'] = bundle_or_obj.slug
+        
+        if self._meta.api_name is not None:
+            kwargs['api_name'] = self._meta.api_name
+        
+        return self._build_reverse_url("api_dispatch_detail", kwargs=kwargs)
+
 class BoundarySetResource(SluggedResource):
+    boundaries = fields.ToManyField('boundaries.apps.api.resources.BoundaryResource', 'boundaries')
+
     class Meta:
         queryset = BoundarySet.objects.all()
         resource_name = 'boundary-set'
@@ -26,5 +51,5 @@ class BoundaryResource(SluggedResource):
     class Meta:
         queryset = Boundary.objects.all()
         resource_name = 'boundary'
-        excludes = ['id', 'shape']
+        excludes = ['id', 'external_id', 'shape']
         allowed_methods = ['get']
