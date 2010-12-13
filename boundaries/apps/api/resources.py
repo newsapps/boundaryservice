@@ -51,7 +51,7 @@ class BoundaryResource(SluggedResource):
     class Meta:
         queryset = Boundary.objects.all()
         resource_name = 'boundary'
-        excludes = ['id', 'external_id', 'display_name', 'shape']
+        excludes = ['id', 'display_name', 'shape']
         allowed_methods = ['get']
 
     def build_filters(self, filters=None):
