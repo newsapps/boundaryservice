@@ -18,7 +18,7 @@ GEOMETRY_COLUMN = 'shape'
 
 class Command(NoArgsCommand):
     help = 'Import boundaries described by shapefiles.'
-    option_list= NoArgsCommand.option_list + (
+    option_list = NoArgsCommand.option_list + (
         make_option('-c', '--clear', action='store_true', dest='clear',
             help='Clear all jurisdictions in the DB.'),
         make_option('-e', '--except', action='store', dest='except',
@@ -54,19 +54,19 @@ class Command(NoArgsCommand):
         SpatialRefSys = connections[DEFAULT_DB_ALIAS].ops.spatial_ref_sys()
         db_srs = SpatialRefSys.objects.get(srid=geometry_field.srid).srs
 
-        for name, config in SHAPEFILES.items():
-            if name not in sources:
-                log.info('Skipping %s.' % name)
+        for kind, config in SHAPEFILES.items():
+            if kind not in sources:
+                log.info('Skipping %s.' % kind)
                 continue
 
-            log.info('Processing %s.' % name)
+            log.info('Processing %s.' % kind)
 
             path = os.path.join(SHAPEFILES_DIR, config['file'])
             datasource = DataSource(path)
 
             # Assume only a single-layer in shapefile
             if datasource.layer_count > 1:
-                log.warn('%s shapefile has multiple layers, using first.' % name)
+                log.warn('%s shapefile has multiple layers, using first.' % kind)
 
             layer = datasource[0]
 
@@ -75,8 +75,9 @@ class Command(NoArgsCommand):
 
             # Create BoundarySet
             set = BoundarySet.objects.create(
-                name=name,
+                name=kind,
                 singular=config['singular'],
+                kind_first=config['kind_first'],
                 authority=config['authority'],
                 last_updated=config['last_updated'],
                 href=config['href'],
@@ -95,15 +96,24 @@ class Command(NoArgsCommand):
                 for field in layer.fields:
                     metadata[field] = feature.get(field)
 
+                external_id = config['ider'](feature)
+                feature_name = config['namer'](feature)
+
+                if config['kind_first']:
+                    display_name = '%s %s' % (config['singular'], feature_name)
+                else:
+                    display_name = '%s %s' % (feature_name, config['singular'])
+
                 Boundary.objects.create(
                     set=set,
                     kind=config['singular'],
-                    external_id=config['ider'](feature),
-                    name=config['namer'](feature),
+                    external_id=external_id,
+                    name=feature_name,
+                    display_name=display_name,
                     metadata=metadata,
                     shape=geometry.wkt)
 
-            log.info('Saved %i %s.' % (set.count, name))
+            log.info('Saved %i %s.' % (set.count, kind))
 
     def polygon_to_multipolygon(self, geom):
         """

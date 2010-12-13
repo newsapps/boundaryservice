@@ -13,6 +13,8 @@ class BoundarySet(SluggedModel):
         help_text='Category of boundaries, e.g. "Community Areas".')
     singular = models.CharField(max_length=64,
         help_text='Name of a single boundary, e.g. "Community Area".')
+    kind_first = models.BooleanField(
+        help_text='If true, boundary display names will be "kind name" (e.g. Austin Community Area), otherwise "name kind" (e.g. 43rd Precinct).')
     authority = models.CharField(max_length=256,
         help_text='The entity responsible for this data\'s accuracy, e.g. "City of Chicago".')
     last_updated = models.DateField(
@@ -42,8 +44,10 @@ class Boundary(SluggedModel):
         help_text='A copy of BoundarySet\'s "singular" value for purposes of slugging and inspection.')
     external_id = models.CharField(max_length=64,
         help_text='The boundaries\' unique id in the source dataset, or a generated one.')
-    name = models.CharField(max_length=256, db_index=True,
+    name = models.CharField(max_length=192, db_index=True,
         help_text='The name of this boundary, e.g. "Austin".')
+    display_name = models.CharField(max_length=256,
+        help_text='The name and kind of the field to be used for display purposes.')
     metadata = JSONField(blank=True,
         help_text='The complete contents of the attribute table for this boundary in the source , structured as json.')
     shape = models.MultiPolygonField(srid=4269,
@@ -56,4 +60,4 @@ class Boundary(SluggedModel):
         Print names are formatted like "Austin Community Area"
         and will slug like "austin-community-area".
         """
-        return unicode('%s %s' % (self.name, self.kind))
+        return unicode(self.display_name)
