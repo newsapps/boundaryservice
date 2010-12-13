@@ -89,6 +89,7 @@ INSTALLED_APPS = (
 
     'tastypie',
 
+    'newsapps.db',
     'boundaries.apps.api',
 )
 
