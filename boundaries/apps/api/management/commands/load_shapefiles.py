@@ -6,7 +6,7 @@ from optparse import make_option
 import os
 import sys
 
-from django.core.management.base import CommandError, NoArgsCommand
+from django.core.management.base import BaseCommand, CommandError
 from django.contrib.gis.gdal import CoordTransform, DataSource, OGRGeometry, OGRGeomType
 from django.contrib.gis.geos import MultiPolygon
 from django.db import connections, DEFAULT_DB_ALIAS
@@ -16,9 +16,9 @@ from boundaries.apps.api.models import BoundarySet, Boundary
 SHAPEFILES_DIR = 'data/shapefiles'
 GEOMETRY_COLUMN = 'shape'
 
-class Command(NoArgsCommand):
+class Command(BaseCommand):
     help = 'Import boundaries described by shapefiles.'
-    option_list = NoArgsCommand.option_list + (
+    option_list = BaseCommand.option_list + (
         make_option('-c', '--clear', action='store_true', dest='clear',
             help='Clear all jurisdictions in the DB.'),
         make_option('-e', '--except', action='store', dest='except',
@@ -30,7 +30,7 @@ class Command(NoArgsCommand):
     def get_version(self):
         return '0.1'
 
-    def handle_noargs(self, **options):
+    def handle(self, *args, **options):
         if options['clear']:
             log.info('Clearing all saved boundaries.')
             Boundary.objects.all().delete()
@@ -42,10 +42,12 @@ class Command(NoArgsCommand):
 
         if options['only']:
             only = options['only'].split(',')
-            sources = [s for s in SHAPEFILES if s in only]
+            # TODO: stripping whitespace here because optparse doesn't handle it correclty
+            sources = [s for s in SHAPEFILES if s.replace(' ', '') in only]
         elif options['except']:
             exceptions = options['except'].upper().split(',')
-            sources = [s for s in SHAPEFILES if s not in exceptions]
+            # See above
+            sources = [s for s in SHAPEFILES if s.replace(' ', '') not in exceptions]
         else:
             sources = [s for s in SHAPEFILES]
         
