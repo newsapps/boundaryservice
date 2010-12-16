@@ -70,6 +70,12 @@ class BoundaryResource(SluggedResource):
             lat, lon = filters['contains'].split(',')
             wkt_pt = 'POINT(%s %s)' % (lon, lat)
 
+            orm_filters = {"shape__contains": wkt_pt}
+
+        if 'near' in filters:
+            lat, lon = filters['near'].split(',')
+            wkt_pt = 'POINT(%s %s)' % (lon, lat)
+
             orm_filters = {"shape__distance_lte": (wkt_pt, D(mi=1))}
 
         return orm_filters
