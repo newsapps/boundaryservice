@@ -81,6 +81,7 @@ class Command(BaseCommand):
                 singular=config['singular'],
                 kind_first=config['kind_first'],
                 authority=config['authority'],
+                domain=config['domain'],
                 last_updated=config['last_updated'],
                 href=config['href'],
                 notes=config['notes'],
