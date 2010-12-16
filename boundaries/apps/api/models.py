@@ -17,6 +17,8 @@ class BoundarySet(SluggedModel):
         help_text='If true, boundary display names will be "kind name" (e.g. Austin Community Area), otherwise "name kind" (e.g. 43rd Precinct).')
     authority = models.CharField(max_length=256,
         help_text='The entity responsible for this data\'s accuracy, e.g. "City of Chicago".')
+    domain = models.CharField(max_length=256,
+        help_text='The area that this BoundarySet covers, e.g. "Chicago" or "Illinois".')
     last_updated = models.DateField(
         help_text='The last time this data was updated by its authority.')
     href = models.URLField(blank=True,
