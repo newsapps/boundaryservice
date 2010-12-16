@@ -61,7 +61,7 @@ class Boundary(SluggedModel):
     objects = models.GeoManager()
 
     class Meta:
-        ordering = ('display_name',)
+        ordering = ('kind', 'display_name')
 
     def __unicode__(self):
         """
