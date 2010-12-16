@@ -20,7 +20,7 @@ class BoundarySet(SluggedModel):
     domain = models.CharField(max_length=256,
         help_text='The area that this BoundarySet covers, e.g. "Chicago" or "Illinois".')
     last_updated = models.DateField(
-        help_text='The last time this data was updated by its authority.')
+        help_text='The last time this data was updated from its authority (but not necessarily the date it is current as of).')
     href = models.URLField(blank=True,
         help_text='The url this data was found at, if any.')
     notes = models.TextField(blank=True,
@@ -29,6 +29,9 @@ class BoundarySet(SluggedModel):
         help_text='Total number of features in this boundary set.')
     metadata_fields = ListField(separator='|', blank=True,
         help_text='What, if any, metadata fields were loaded from the original dataset.')
+
+    class Meta:
+        ordering = ('name',)
 
     def __unicode__(self):
         """
@@ -56,7 +59,10 @@ class Boundary(SluggedModel):
         help_text='The geometry of this boundary in EPSG:4269 projection.')
     
     objects = models.GeoManager()
-    
+
+    class Meta:
+        ordering = ('display_name',)
+
     def __unicode__(self):
         """
         Print names are formatted like "Austin Community Area"
