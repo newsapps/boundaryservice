@@ -5,4 +5,4 @@ def index(request):
     template_dict = {}
     template_dict['domain'] = settings.MY_SITE_DOMAIN
     
-    return render_to_response('/geo-locale.html', template_dict)
+    return render_to_response('/geo-location.html', template_dict)
