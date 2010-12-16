@@ -1,4 +1,5 @@
 from django.conf.urls.defaults import url
+from django.contrib.gis.measure import D
 from tastypie import fields
 from tastypie.bundle import Bundle
 from tastypie.resources import ModelResource
@@ -41,6 +42,7 @@ class BoundarySetResource(SluggedResource):
 
     class Meta:
         queryset = BoundarySet.objects.all()
+        serializer = Serializer(formats=['json', 'jsonp'], content_types = {'json': 'application/json', 'jsonp': 'text/javascript'})
         resource_name = 'boundary-set'
         excludes = ['id', 'singular', 'kind_first']
         allowed_methods = ['get']
@@ -50,6 +52,7 @@ class BoundaryResource(SluggedResource):
 
     class Meta:
         queryset = Boundary.objects.all()
+        serializer = Serializer(formats=['json', 'jsonp'], content_types = {'json': 'application/json', 'jsonp': 'text/javascript'})
         resource_name = 'boundary'
         excludes = ['id', 'display_name', 'shape']
         allowed_methods = ['get']
@@ -67,6 +70,6 @@ class BoundaryResource(SluggedResource):
             lat, lon = filters['contains'].split(',')
             wkt_pt = 'POINT(%s %s)' % (lon, lat)
 
-            orm_filters = {"shape__contains": wkt_pt}
+            orm_filters = {"shape__distance_lte": (wkt_pt, D(mi=1))}
 
         return orm_filters
