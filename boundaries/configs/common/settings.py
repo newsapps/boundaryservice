@@ -91,6 +91,7 @@ INSTALLED_APPS = (
 
     'newsapps.db',
     'boundaries.apps.api',
+    'boundaries.apps.demo',
 )
 
 # Predefined domain

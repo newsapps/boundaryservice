@@ -1,0 +1,139 @@
+<!doctype html>
+<html> 
+	<head> 
+	
+		<title>You are here.</title> 
+		<style type="text/css">
+		body {
+			font-family: Georgia, serif;
+		}
+		h1, h2, h3, h4 {
+			font-family: Arial, Helvetica, sans-serif;
+		}
+		table tr:nth-child(even) td {
+			background:#eff1f3;
+		}
+		#page-title:after {
+			content: "\21D3";
+		}
+		#wrap {
+			width: 960px;
+			margin: 0 auto;
+		}
+		#locations {
+			width: 100%;
+		}
+		#locations td {
+			width: 50%;
+			padding: 10px 4px;
+			margin: 0;
+		}
+		#area-lookup {
+			padding: 15px;
+		}
+		.clearfix:after {
+			content: ".";
+			display: block;
+			clear: both;
+			visibility: hidden;
+			line-height: 0;
+			height: 0;
+		}
+ 
+		.clearfix {
+			display: inline-block;
+		}
+ 
+		html[xmlns] .clearfix {
+			display: block;
+		}
+ 
+		* html .clearfix {
+			height: 1%;
+		}
+		</style>
+		<script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.4.4/jquery.min.js"></script> 
+		<script type="text/javascript" src="http://maps.google.com/maps/api/js?sensor=true"></script> 
+	</head> 
+	<body> 
+	
+		<div id="wrap"> 
+				<h1 id="page-title">You are here.</h1>
+				
+				<div id="georesults" style="font-size: 1.5em; background-color: #efefef; padding: 15px; width: 910px; height: 250px;" class="clearfix"> 
+					<p> 
+						Waiting for browser ...
+					</p> 
+				</div> 
+				<div id="area-lookup"></div> 
+				
+				<script type="text/javascript"> 
+		
+					function googleMapShow(lat,long) {
+						var latlng = new google.maps.LatLng(lat, long);
+						var myOptions = {
+							zoom: 14,
+							center: latlng,
+							mapTypeId: google.maps.MapTypeId.ROADMAP
+						};
+						var map = new google.maps.Map(document.getElementById("map_canvas"), myOptions);
+						var markerOpts = {
+							position: latlng, 
+							map: map
+						};
+						var mark = new google.maps.Marker(markerOpts);
+					}
+					
+				
+					// Use jQuery to display useful information about our position.
+					function exportPosition(position) {
+						$('#georesults').html(
+							'<div id="map_canvas" style="float: right; width: 440px; height: 250px; border: 2px solid #ccc"></div>' +
+							'<p>' 
+									+ 'Latitude: ' + position.coords.latitude + '<br />'
+									+ 'Longitude: ' + position.coords.longitude + '<br />'
+									+ 'Accuracy: ' + position.coords.accuracy + '<br />'
+									+ 'Altitude: ' + position.coords.altitude + '<br />'
+									+ 'Altitude accuracy: ' + position.coords.altitudeAccuracy + '<br />'
+									+ 'Heading: ' + position.coords.heading + '<br />'
+									+ 'Speed: ' + position.coords.speed + '<br />'
+							+ '</p>'
+						);
+						googleMapShow(position.coords.latitude, position.coords.longitude,{ maximumAge:600000 });
+						get_areas(position.coords.latitude, position.coords.longitude);
+					}
+					
+					function errorPosition() {
+						$('#georesults').html('<p>The page could not get your location.</p>');
+					}
+
+					function get_areas(lat, lng) {
+						var areas_html = '<h3>Your location falls within:</h3><table id="locations" border="0" cellpadding="0" cellspacing="0">';
+						var url = 'http://{{ domain }}/api/v1/boundary/?format=jsonp&contains='+lat+','+lng+'&callback=?';
+						
+						$.getJSON(url, function(data) {
+							$.each(data.objects, function(i, object) {
+								areas_html += '<tr><td>' + object.kind + '</td><td><strong>' + object.name + '</strong></td></td>';
+							});
+							areas_html += '</table>';
+							$('#area-lookup').html(areas_html);
+						});
+						
+					}
+					
+					if (navigator.geolocation) {
+						navigator.geolocation.getCurrentPosition(exportPosition, errorPosition);
+					} else {
+						// If the browser isn't geo-capable, tell the user.
+						$('#georesults').html('<p>Your browser does not support geolocation.</p>');
+				    }
+				</script> 
+				
+				<hr /> 
+		</div> 
+	
+	</body> 
+</html> 
+ 
+ 
+ 

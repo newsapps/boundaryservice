@@ -12,5 +12,6 @@ urlpatterns = patterns('',
         'document_root': settings.MEDIA_ROOT
     }),
 
-    (r'^api/', include('api.urls'))
+    (r'^api/', include('api.urls')),
+    (r'^', include('demo.urls'))
 )
