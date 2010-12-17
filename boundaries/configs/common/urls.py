@@ -13,5 +13,5 @@ urlpatterns = patterns('',
     }),
 
     (r'^api/', include('api.urls')),
-    (r'^', include('demo.urls'))
+    (r'', include('demo.urls'))
 )
