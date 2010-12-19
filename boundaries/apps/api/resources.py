@@ -68,11 +68,16 @@ class BoundaryResource(SluggedResource):
 
         orm_filters = super(BoundaryResource, self).build_filters(filters)
 
+        if 'sets' in filters:
+            sets = filters['sets'].split(',')
+
+            orm_filters.update({'set__slug__in': sets})
+
         if 'contains' in filters:
             lat, lon = filters['contains'].split(',')
             wkt_pt = 'POINT(%s %s)' % (lon, lat)
 
-            orm_filters = {"shape__contains": wkt_pt}
+            orm_filters.update({'shape__contains': wkt_pt})
 
         if 'near' in filters:
             lat, lon, range = filters['near'].split(',')
@@ -82,6 +87,6 @@ class BoundaryResource(SluggedResource):
             numeral = int(numeral)
             kwargs = {unit: numeral}
 
-            orm_filters = {"shape__distance_lte": (wkt_pt, D(**kwargs))}
+            orm_filters.update({'shape__distance_lte': (wkt_pt, D(**kwargs))})
 
         return orm_filters
