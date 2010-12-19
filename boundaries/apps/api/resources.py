@@ -1,3 +1,5 @@
+import re
+
 from django.conf.urls.defaults import url
 from django.contrib.gis.measure import D
 from tastypie import fields
@@ -73,9 +75,13 @@ class BoundaryResource(SluggedResource):
             orm_filters = {"shape__contains": wkt_pt}
 
         if 'near' in filters:
-            lat, lon = filters['near'].split(',')
+            lat, lon, range = filters['near'].split(',')
             wkt_pt = 'POINT(%s %s)' % (lon, lat)
+            numeral = re.match('([0-9]+)', range).group(1)
+            unit = range[len(numeral):]
+            numeral = int(numeral)
+            kwargs = {unit: numeral}
 
-            orm_filters = {"shape__distance_lte": (wkt_pt, D(mi=1))}
+            orm_filters = {"shape__distance_lte": (wkt_pt, D(**kwargs))}
 
         return orm_filters
