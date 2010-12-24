@@ -178,7 +178,7 @@
                     // User boundary service to lookup what areas the location falls within
                     function get_areas(lat, lng) {
                         var areas_html = '<h3>Your location falls within:</h3><div id="areas">';
-                        var url = 'http://{{ domain }}/api/v1/boundary/?format=jsonp&contains='+lat+','+lng+'&callback=?';
+                        var url = 'http://{{ domain }}/api/1.0/boundary/?format=jsonp&contains='+lat+','+lng+'&callback=?';
                         
                         $.getJSON(url, function(data) {
                             $.each(data.objects, function(i, object) {
