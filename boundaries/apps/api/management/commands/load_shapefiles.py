@@ -92,6 +92,15 @@ class Command(BaseCommand):
                 # Transform the geometry to the correct SRS
                 geometry = self.polygon_to_multipolygon(feature.geom)
                 geometry.transform(transformer)
+    
+                # Create simplified geometry field by collapsing points within 1/1000th of a degree.
+                # Since Chicago is at approx. 42 degrees latitude this works out to an margin of 
+                # roughly 80 meters latitude and 112 meters longitude.
+                # Preserve topology prevents a shape from ever crossing over itself.
+                simple_geometry = geometry.geos.simplify(0.0001, preserve_topology=True)
+                
+                # Conversion may force multipolygons back to being polygons
+                simple_geometry = self.polygon_to_multipolygon(simple_geometry.ogr)
 
                 # Extract metadata into a dictionary
                 metadata = {}
@@ -114,7 +123,8 @@ class Command(BaseCommand):
                     name=feature_name,
                     display_name=display_name,
                     metadata=metadata,
-                    shape=geometry.wkt)
+                    shape=geometry.wkt,
+                    simple_shape=simple_geometry.wkt)
 
             log.info('Saved %i %s.' % (set.count, kind))
 

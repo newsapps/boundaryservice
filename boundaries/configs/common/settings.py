@@ -98,6 +98,10 @@ INSTALLED_APPS = (
     'boundaries.apps.api',
 )
 
+FIXTURE_DIRS = (
+   'data/fixtures/',
+)
+
 # Predefined domain
 MY_SITE_DOMAIN = 'localhost:8000'
 

@@ -57,6 +57,8 @@ class Boundary(SluggedModel):
         help_text='The complete contents of the attribute table for this boundary in the source , structured as json.')
     shape = models.MultiPolygonField(srid=4269,
         help_text='The geometry of this boundary in EPSG:4269 projection.')
+    simple_shape = models.MultiPolygonField(srid=4269,
+        help_text='Same as "shape", but the geometry will have been simplified.')
     
     objects = models.GeoManager()
 

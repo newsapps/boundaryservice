@@ -50,12 +50,12 @@ class JSONOnlySerializer(Serializer):
     def to_json(self, data, options=None):
         options = options or {}
         data = self.to_simple(data, options)
-
+        
         # Go through hackery hell to encode geometries as geojson instead of wkt
         def reencode_shape(obj):
-            if 'shape' in obj:
-                geom = GEOSGeometry(obj['shape'])
-                obj['shape'] = simplejson.loads(geom.geojson)
+            if 'simple_shape' in obj:
+                geom = GEOSGeometry(obj['simple_shape'])
+                obj['simple_shape'] = simplejson.loads(geom.geojson)
 
         # Lists
         if 'objects' in data:
@@ -64,7 +64,7 @@ class JSONOnlySerializer(Serializer):
         # Single objects
         elif isinstance(data, dict):
             reencode_shape(data)
-
+        
         return simplejson.dumps(data, cls=json.DjangoJSONEncoder, sort_keys=True)
 
 class BoundarySetResource(SluggedResource):
@@ -84,7 +84,7 @@ class BoundaryResource(SluggedResource):
         queryset = Boundary.objects.all()
         serializer = JSONOnlySerializer()
         resource_name = 'boundary'
-        excludes = ['id', 'display_name']
+        excludes = ['id', 'display_name', 'shape']
         allowed_methods = ['get']
 
     def build_filters(self, filters=None):
