@@ -1,7 +1,11 @@
 import re
 
 from django.conf.urls.defaults import url
+from django.contrib.gis.db import models
+from django.contrib.gis.geos import GEOSGeometry
 from django.contrib.gis.measure import D
+from django.core.serializers import json
+from django.utils import simplejson
 from tastypie import fields
 from tastypie.bundle import Bundle
 from tastypie.resources import ModelResource
@@ -39,12 +43,36 @@ class SluggedResource(ModelResource):
         
         return self._build_reverse_url("api_dispatch_detail", kwargs=kwargs)
 
+class JSONOnlySerializer(Serializer):
+    def __init__(self):
+        Serializer.__init__(self, formats=['json', 'jsonp'], content_types = {'json': 'application/json', 'jsonp': 'text/javascript'})
+
+    def to_json(self, data, options=None):
+        options = options or {}
+        data = self.to_simple(data, options)
+
+        # Go through hackery hell to encode geometries as geojson instead of wkt
+        def reencode_shape(obj):
+            if 'shape' in obj:
+                geom = GEOSGeometry(obj['shape'])
+                obj['shape'] = simplejson.loads(geom.geojson)
+
+        # Lists
+        if 'objects' in data:
+            for obj in data['objects']:
+                reencode_shape(obj)
+        # Single objects
+        elif isinstance(data, dict):
+            reencode_shape(data)
+
+        return simplejson.dumps(data, cls=json.DjangoJSONEncoder, sort_keys=True)
+
 class BoundarySetResource(SluggedResource):
     boundaries = fields.ToManyField('boundaries.apps.api.resources.BoundaryResource', 'boundaries')
 
     class Meta:
         queryset = BoundarySet.objects.all()
-        serializer = Serializer(formats=['json', 'jsonp'], content_types = {'json': 'application/json', 'jsonp': 'text/javascript'})
+        serializer = JSONOnlySerializer()
         resource_name = 'boundary-set'
         excludes = ['id', 'singular', 'kind_first']
         allowed_methods = ['get']
@@ -54,9 +82,9 @@ class BoundaryResource(SluggedResource):
 
     class Meta:
         queryset = Boundary.objects.all()
-        serializer = Serializer(formats=['json', 'jsonp'], content_types = {'json': 'application/json', 'jsonp': 'text/javascript'})
+        serializer = JSONOnlySerializer()
         resource_name = 'boundary'
-        excludes = ['id', 'display_name', 'shape']
+        excludes = ['id', 'display_name']
         allowed_methods = ['get']
 
     def build_filters(self, filters=None):
