@@ -96,6 +96,7 @@ INSTALLED_APPS = (
 
     'newsapps.db',
     'boundaries.apps.api',
+    'boundaries.apps.demo',
 )
 
 FIXTURE_DIRS = (
