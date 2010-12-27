@@ -31,11 +31,6 @@ class Command(BaseCommand):
         return '0.1'
 
     def handle(self, *args, **options):
-        if options['clear']:
-            log.info('Clearing all saved boundaries.')
-            Boundary.objects.all().delete()
-            BoundarySet.objects.all().delete()
-
         # Load configuration
         sys.path.append(os.path.abspath(SHAPEFILES_DIR))
         from definitions import SHAPEFILES
@@ -62,6 +57,16 @@ class Command(BaseCommand):
                 continue
 
             log.info('Processing %s.' % kind)
+
+            if options['clear']:
+                log.info('Clearing old %s.' % kind)
+
+                set = BoundarySet.objects.get(name=kind)
+                if set:
+                    set.boundaries.all().delete()
+                    set.delete()
+
+                log.info('Loading new %s.' % kind)
 
             path = os.path.join(SHAPEFILES_DIR, config['file'])
             datasource = DataSource(path)
