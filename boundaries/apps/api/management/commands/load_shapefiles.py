@@ -61,7 +61,13 @@ class Command(BaseCommand):
             if options['clear']:
                 log.info('Clearing old %s.' % kind)
 
-                set = BoundarySet.objects.get(name=kind)
+                set = None
+
+                try:
+                    set = BoundarySet.objects.get(name=kind)
+                except BoundarySet.DoesNotExist:
+                    pass
+
                 if set:
                     set.boundaries.all().delete()
                     set.delete()
