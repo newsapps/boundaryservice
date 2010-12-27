@@ -59,8 +59,6 @@ class Command(BaseCommand):
             log.info('Processing %s.' % kind)
 
             if options['clear']:
-                log.info('Clearing old %s.' % kind)
-
                 set = None
 
                 try:
@@ -69,10 +67,10 @@ class Command(BaseCommand):
                     pass
 
                 if set:
+                    log.info('Clearing old %s.' % kind)
                     set.boundaries.all().delete()
                     set.delete()
-
-                log.info('Loading new %s.' % kind)
+                    log.info('Loading new %s.' % kind)
 
             path = os.path.join(SHAPEFILES_DIR, config['file'])
             datasource = DataSource(path)
