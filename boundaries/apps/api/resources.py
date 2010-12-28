@@ -117,4 +117,10 @@ class BoundaryResource(SluggedResource):
 
             orm_filters.update({'shape__distance_lte': (wkt_pt, D(**kwargs))})
 
+        if 'intersects' in filters:
+            slug = filters['intersects']
+            bounds = Boundary.objects.get(slug=slug)
+
+            orm_filters.update({'shape__intersects': bounds.shape})            
+
         return orm_filters
