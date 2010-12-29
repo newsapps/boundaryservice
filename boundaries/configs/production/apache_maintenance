@@ -1,8 +1,5 @@
 <VirtualHost *:80>
-    ServerName boundaries.chicagotribune.com
-    ServerAlias boundaries.apps.chicagotribune.com
-    ServerAlias www.boundaries.chicagotribune.com
-    ServerAlias www.boundaries.apps.chicagotribune.com
+    ServerName boundaries.tribapps.com
     
     SetEnvIf X-Forwarded-For "^163\.192\..*\..*" trib
     <Location /> # until launch
@@ -28,8 +25,8 @@
     
     RewriteEngine on
     # canonical hostname
-    RewriteCond %{HTTP_HOST} !^boundaries.chicagotribune.com [NC] 
-    RewriteRule ^/(.*)  http://boundaries.chicagotribune.com/$1 [L,R]
+    RewriteCond %{HTTP_HOST} !^boundaries.tribapps.com [NC] 
+    RewriteRule ^/(.*)  http://boundaries.tribapps.com/$1 [L,R]
     
     DocumentRoot /home/newsapps/sites/boundaries/repository/boundaries/assets/
     
