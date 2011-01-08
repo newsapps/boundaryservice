@@ -1,0 +1,70 @@
+body {
+    font-family: Georgia, serif;
+}
+
+h1, h2, h3, h4 {
+    font-family: Arial, Helvetica, sans-serif;
+}
+
+table tr:nth-child(even) td {
+    background:#eff1f3;
+}
+
+#wrap {
+    width: 960px;
+    margin: 0 auto;
+}
+
+#locations {
+    width: 100%;
+}
+
+#locations td {
+    width: 50%;
+    padding: 10px 4px;
+    margin: 0;
+}
+
+#area-lookup {
+    padding: 15px;
+}
+
+.clearfix:after {
+    content: ".";
+    display: block;
+    clear: both;
+    visibility: hidden;
+    line-height: 0;
+    height: 0;
+}
+
+.clearfix {
+    display: inline-block;
+}
+
+html[xmlns] .clearfix {
+    display: block;
+}
+
+* html .clearfix {
+    height: 1%;
+}
+
+#form-wrapper {
+    float: right;
+    margin: 0 20px 0 0;
+    height: 30px;
+}
+
+form#location-form {
+    display: none;
+}
+
+form#location-form input[type="text"] {
+    margin:0;
+    padding: 0;
+    width: 300px;
+    height: 20px;
+    line-height: 20px;
+    font-size: 16px;
+}

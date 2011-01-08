@@ -1,23 +1,27 @@
-from django.shortcuts import render_to_response
-from django.conf import settings
-
 import re
 
+from django.conf import settings
+from django.shortcuts import render_to_response
+from django.template.loader import render_to_string
+
 def index(request):
-    template_dict = {}
+    context = {}
+
     try:
         address = request.REQUEST.get('address')
-        template_dict['address'] = address
+        context['address'] = address
     except KeyError:
         pass
 
-    template_dict['domain'] = settings.MY_SITE_DOMAIN
+    context['domain'] = settings.MY_SITE_DOMAIN
+    context['demo_js'] = render_to_string('demo.js', context)
 
     mobile = detect_mobile(request)
+
     if mobile:
-        return render_to_response('/geo-location-mobile.html', template_dict)
+        return render_to_response('/geo-location-mobile.html', context)
     else:
-        return render_to_response('/geo-location.html', template_dict)
+        return render_to_response('/geo-location.html', context)
         
 def detect_mobile(request):
     ua = request.META["HTTP_USER_AGENT"]
