@@ -10,6 +10,7 @@ from tastypie import fields
 from tastypie.bundle import Bundle
 from tastypie.resources import ModelResource
 from tastypie.serializers import Serializer
+from tastypie.utils import trailing_slash
 
 from boundaries.apps.api.models import BoundarySet, Boundary
 
@@ -22,6 +23,7 @@ class SluggedResource(ModelResource):
         Add slug-based url pattern.
         """
         return [
+            url(r"^(?P<resource_name>%s)/schema%s$" % (self._meta.resource_name, trailing_slash()), self.wrap_view('get_schema'), name="api_get_schema"),
             url(r"^(?P<resource_name>%s)/(?P<slug>[\w\d_.-]+)/$" % self._meta.resource_name, self.wrap_view('dispatch_detail'), name="api_dispatch_detail"),
             ]
 

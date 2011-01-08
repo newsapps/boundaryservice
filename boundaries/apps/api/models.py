@@ -44,7 +44,7 @@ class Boundary(SluggedModel):
     A boundary object, such as a Ward or Neighborhood.
     """
     set = models.ForeignKey(BoundarySet, related_name='boundaries',
-        help_text='A category, e.g. "Community Area".')
+        help_text='Category of boundaries that this boundary belongs, e.g. "Community Areas".')
     kind = models.CharField(max_length=64,
         help_text='A copy of BoundarySet\'s "singular" value for purposes of slugging and inspection.')
     external_id = models.CharField(max_length=64,
@@ -54,11 +54,11 @@ class Boundary(SluggedModel):
     display_name = models.CharField(max_length=256,
         help_text='The name and kind of the field to be used for display purposes.')
     metadata = JSONField(blank=True,
-        help_text='The complete contents of the attribute table for this boundary in the source , structured as json.')
+        help_text='The complete contents of the attribute table for this boundary from the source shapefile, structured as json.')
     shape = models.MultiPolygonField(srid=4269,
         help_text='The geometry of this boundary in EPSG:4269 projection.')
     simple_shape = models.MultiPolygonField(srid=4269,
-        help_text='Same as "shape", but the geometry will have been simplified.')
+        help_text='The geometry of this boundary in EPSG:4269 projection and simplified to 0.0001 tolerance.')
     
     objects = models.GeoManager()
 
