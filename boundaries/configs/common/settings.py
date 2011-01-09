@@ -92,6 +92,7 @@ INSTALLED_APPS = (
     'django.contrib.gis',
     'django.contrib.sitemaps',
 
+    'south',
     'tastypie',
 
     'newsapps.db',
