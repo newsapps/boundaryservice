@@ -55,7 +55,7 @@ html[xmlns] .clearfix {
 }
 
 #form-wrapper {
-    float: right;
+    float: left;
     margin: 0 20px 0 0;
     height: 30px;
 }
@@ -67,8 +67,13 @@ form#location-form {
 form#location-form input[type="text"] {
     margin:0;
     padding: 0;
-    width: 300px;
+    width: 370px;
     height: 20px;
     line-height: 20px;
     font-size: 16px;
+}
+
+#use-current-location {
+	display: none;
+	line-height: 200%;
 }

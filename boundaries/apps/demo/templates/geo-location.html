@@ -8,16 +8,17 @@
     </head> 
     <body> 
         <div id="wrap"> 
-                <h1 id="page-title">You are here.</h1>
+                <h1 id="page-title"><a href="/">You are here.</a></h1>
                 <div id="form-wrapper">
-                    <a href="javascript:void(0)" id="not-where-i-am">Wait, that's not where I am</a>
                     <form action="" id="location-form">
                         <input type="text" name="address" value="Enter an address" />
                         <input type="submit">
                     </form>
+                    <a href="javascript:void(0)" id="use-current-location">Use my current location instead</a>
+                    <a href="javascript:void(0)" id="not-where-i-am">Wait, that's not where I am</a>
                 </div>
-                <div id="georesults" style="font-size: 1.5em; background-color: #efefef; padding: 15px; width: 910px; height: 250px;" class="clearfix">
-                    <div id="map_canvas" style="float: right; width: 440px; height: 250px; border: 2px solid #ccc"></div>
+                <div id="georesults" style="background-color: #efefef; padding: 15px 15px 0 15px; width: 910px;" class="clearfix">
+                    <div id="map_canvas" style="float: right; width: 100%; height: 280px; border: 2px solid #ccc; margin: 0 0 10px 0;"></div>
                     <p id="resultinfo"> 
                         Waiting for browser ...
                     </p> 

@@ -33,22 +33,34 @@ function show_user_marker(lat, lng) {
 
         google.maps.event.addListener(user_marker, 'dragend', function() {
             ll = user_marker.getPosition();
-            process_location(ll.lat(), ll.lng());
+            geocode(new google.maps.LatLng(ll.lat(), ll.lng()))
         });
     }
 
     user_marker.setPosition(new google.maps.LatLng(lat, lng));
 }
 
-function geocode(address) {
-    gr = { 'address': address };
+function geocode(query) {
+    if ( typeof(query) == 'string' ) {
+        pattr = /\sil\s|\sillinois\s/gi;
+        match = query.match(pattr);
+        if (!match) {
+            query = query + ' IL';
+        }
+        gr = { 'address': query };
+    } else {
+        gr = { 'location': query };
+    }
     geocoder.geocode(gr, handle_geocode);
 }
 
 function handle_geocode(results, status) {
     lat = results[0].geometry.location.lat();
     lng = results[0].geometry.location.lng();
-    
+
+    normalized_address = results[0].formatted_address;
+    show_search(normalized_address);
+
     process_location(lat, lng);
 }
 
@@ -120,31 +132,31 @@ function display_boundary(slug, no_fit) {
 
     // Construct new polygons
     var coords = boundaries[slug]["simple_shape"].coordinates;
-	var paths = [];
+    var paths = [];
     var bounds = new google.maps.LatLngBounds(); 
 
-	$.each(coords, function(i, n){
-		$.each(n, function(j, o){
-			var path = [];
+    $.each(coords, function(i, n){
+        $.each(n, function(j, o){
+            var path = [];
 
-			$.each(o, function(k,p){
-				var ll = new google.maps.LatLng(p[1], p[0]);
+            $.each(o, function(k,p){
+                var ll = new google.maps.LatLng(p[1], p[0]);
                 path.push(ll);
                 bounds.extend(ll);
-			});
+            });
 
-			paths.push(path);
-		});
-	});
+            paths.push(path);
+        });
+    });
 
-	displayed_polygon = new google.maps.Polygon({
-		paths: paths,
-		strokeColor: "#FF7800",
-		strokeOpacity: 1,
-		strokeWeight: 2,
-		fillColor: "#46461F",
-		fillOpacity: 0.25
-	});
+    displayed_polygon = new google.maps.Polygon({
+        paths: paths,
+        strokeColor: "#FF7800",
+        strokeOpacity: 1,
+        strokeWeight: 2,
+        fillColor: "#46461F",
+        fillOpacity: 0.25
+    });
 
     displayed_slug = slug;
     displayed_polygon.setMap(map);
@@ -156,13 +168,27 @@ function display_boundary(slug, no_fit) {
     }
 }
 
+function show_search(query) {
+    $('#not-where-i-am').hide();
+    $('#use-current-location').fadeIn();
+    $('#form-wrapper').css('height', '60px');
+    $('#location-form input[type=text]').val(query);
+    $('#location-form').fadeIn();
+}
+
 $(document).ready(function() {
     // Setup handlers
     $('#not-where-i-am').click(function() {
         $(this).hide();
+        $('#form-wrapper').css('height', '60px');
         $('#location-form').fadeIn();
+        $('#use-current-location').fadeIn();
     });
-    
+    $('#use-current-location').click(function() {
+        home = window.location.host;
+        window.location = 'http://' + home;
+    });
+
     // Clear input box on click, replace value on blur
     defaultval = $('#location-form input[type=text]').val(); 
     $('#location-form input[type=text]').focus(function() {
@@ -170,9 +196,9 @@ $(document).ready(function() {
             $(this).val("");
         }
     });
-
+    
     // Process address geocoding
-    var query = {% if address %}'{{ address }}'{% else %}null{% endif %};
+    var query = {% if address %}'{{ address }}';{% else %}null{% endif %};
 
     // Decide what location info to use
     if (query) {
