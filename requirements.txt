@@ -9,3 +9,4 @@ python-memcached
 python-dateutil
 mimeparse
 lxml
+south=0.7.3
