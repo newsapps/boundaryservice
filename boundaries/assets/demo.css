@@ -15,11 +15,11 @@ table tr:nth-child(even) td {
     margin: 0 auto;
 }
 
-#locations {
+#boundaries {
     width: 100%;
 }
 
-#locations td {
+#boundaries td {
     width: 50%;
     padding: 10px 4px;
     margin: 0;

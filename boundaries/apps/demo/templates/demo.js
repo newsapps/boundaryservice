@@ -1,5 +1,9 @@
 // Geocoder stuff
 var geocoder = new google.maps.Geocoder();
+var map = null;
+
+var displayed_polygon = null;
+var boundaries = new Array();
 
 function handle_geocode(results, status) {
     position = new Object();
@@ -34,7 +38,8 @@ function googleMapShow(lat,long) {
         center: latlng,
         mapTypeId: google.maps.MapTypeId.ROADMAP
     };
-    var map = new google.maps.Map(document.getElementById("map_canvas"), myOptions);
+    map = new google.maps.Map(document.getElementById("map_canvas"), myOptions);
+    
     var markerOpts = {
         position: latlng, 
         map: map
@@ -57,7 +62,7 @@ function exportPosition(position) {
         + '</p>'
     );
     googleMapShow(position.coords.latitude, position.coords.longitude,{ maximumAge:600000 });
-    get_areas(position.coords.latitude, position.coords.longitude);
+    get_boundaries(position.coords.latitude, position.coords.longitude);
 }
 
 function errorPosition() {
@@ -65,18 +70,58 @@ function errorPosition() {
 }
 
 // User boundary service to lookup what areas the location falls within
-function get_areas(lat, lng) {
-    var areas_html = '<h3>Your location falls within:</h3><table id="locations" border="0" cellpadding="0" cellspacing="0">';
-    var url = 'http://{{ domain }}/api/1.0/boundary/?format=jsonp&contains='+lat+','+lng+'&callback=?';
+function get_boundaries(lat, lng) {
+    var table_html = '<h3>Your location falls within:</h3><table id="boundaries" border="0" cellpadding="0" cellspacing="0">';
+    var query_url = 'http://{{ domain }}/api/1.0/boundary/?format=jsonp&limit=100&contains='+lat+','+lng+'&callback=?';
     
-    $.getJSON(url, function(data) {
-        $.each(data.objects, function(i, object) {
-            areas_html += '<tr><td>' + object.kind + '</td><td><strong>' + object.name + '</strong></td></td>';
+    $.getJSON(query_url, function(data) {
+        $.each(data.objects, function(i, obj) {
+            boundaries[obj.slug] = obj;
+            table_html += '<tr><td>' + obj.kind + '</td><td><strong><a href="javascript:display_boundary(\'' + obj.slug + '\');">' + obj.name + '</a></strong></td></td>';
         });
-        areas_html += '</table>';
-        $('#area-lookup').html(areas_html);
+        table_html += '</table>';
+        $('#area-lookup').html(table_html);
     });
     
+}
+
+function display_boundary(slug) {
+    // Clear old polygons
+    if (displayed_polygon != null) {
+        displayed_polygon.setMap(null);
+        displayed_polygon = null;
+    }
+
+    // Construct new polygons
+    var coords = boundaries[slug]["simple_shape"].coordinates;
+	var paths = [];
+    var bounds = new google.maps.LatLngBounds(); 
+
+	$.each(coords, function(i, n){
+		$.each(n, function(j, o){
+			var path = [];
+
+			$.each(o, function(k,p){
+				var ll = new google.maps.LatLng(p[1], p[0]);
+                path.push(ll);
+                bounds.extend(ll);
+			});
+
+			paths.push(path);
+		});
+	});
+
+	displayed_polygon = new google.maps.Polygon({
+		paths: paths,
+		strokeColor: "#FF7800",
+		strokeOpacity: 1,
+		strokeWeight: 2,
+		fillColor: "#46461F",
+		fillOpacity: 0.25
+	});
+
+    displayed_polygon.setMap(map);
+    map.fitBounds(bounds);
 }
 
 // Other stuff
