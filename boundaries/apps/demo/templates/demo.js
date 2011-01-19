@@ -2,26 +2,25 @@
 var geocoder = new google.maps.Geocoder();
 var map = null;
 
+var user_marker = new google.maps.Marker();
 var displayed_polygon = null;
 var boundaries = new Array();
 
-function handle_geocode(results, status) {
-    position = new Object();
-    position.coords = new Object();
-    
-    lat = results[0].geometry.location.lat();
-    lng = results[0].geometry.location.lng();
-    
-    // position object
-    position.coords.latitude = lat;
-    position.coords.longitude = lng;
-    position.coords.accuracy = null;
-    position.coords.altitude = null;
-    position.coords.altitudeAccuracy = null;
-    position.coords.heading = null;
-    position.coords.speed = null;
-    
-    exportPosition(position);
+function init_map(lat, lng) {
+    var ll = new google.maps.LatLng(lat, lng);
+
+    var map_options = {
+        zoom: 14,
+        center: ll,
+        mapTypeId: google.maps.MapTypeId.ROADMAP
+    };
+
+    map = new google.maps.Map(document.getElementById("map_canvas"), map_options);
+}
+
+function show_user_marker(lat, lng) {
+    user_marker.setPosition(new google.maps.LatLng(lat, lng));
+    user_marker.setMap(map);
 }
 
 function geocode(address) {
@@ -30,39 +29,27 @@ function geocode(address) {
     geocoder.geocode(gr, handle_geocode);
 }
 
-// Browser geolocation stuff
-function googleMapShow(lat,long) {
-    var latlng = new google.maps.LatLng(lat, long);
-    var myOptions = {
-        zoom: 14,
-        center: latlng,
-        mapTypeId: google.maps.MapTypeId.ROADMAP
-    };
-    map = new google.maps.Map(document.getElementById("map_canvas"), myOptions);
+function handle_geocode(results, status) {
+    position = new Object();
+    position.coords = new Object();
     
-    var markerOpts = {
-        position: latlng, 
-        map: map
-    };
-    var mark = new google.maps.Marker(markerOpts);
-}
-
-// Use jQuery to display useful information about our position.
-function exportPosition(position) {
+    lat = results[0].geometry.location.lat();
+    lng = results[0].geometry.location.lng();
+    
     $('#georesults').html(
         '<div id="map_canvas" style="float: right; width: 440px; height: 250px; border: 2px solid #ccc"></div>' +
         '<p>' 
-                + 'Latitude: ' + position.coords.latitude + '<br />'
-                + 'Longitude: ' + position.coords.longitude + '<br />'
-                + 'Accuracy: ' + position.coords.accuracy + '<br />'
-                + 'Altitude: ' + position.coords.altitude + '<br />'
-                + 'Altitude accuracy: ' + position.coords.altitudeAccuracy + '<br />'
-                + 'Heading: ' + position.coords.heading + '<br />'
-                + 'Speed: ' + position.coords.speed + '<br />'
+                + 'Latitude: ' + lat + '<br />'
+                + 'Longitude: ' + lng + '<br />'
         + '</p>'
     );
-    googleMapShow(position.coords.latitude, position.coords.longitude,{ maximumAge:600000 });
-    get_boundaries(position.coords.latitude, position.coords.longitude);
+
+    if (map == null) {
+        init_map(lat, lng);
+    }
+    
+    show_user_marker(lat, lng);
+    get_boundaries(lat, lng);
 }
 
 function errorPosition() {
@@ -124,9 +111,8 @@ function display_boundary(slug) {
     map.fitBounds(bounds);
 }
 
-// Other stuff
-$(function(){
-    // Show search form
+$(document).ready(function() {
+    // Setup handlers
     $('#not-where-i-am').click(function() {
         $(this).hide();
         $('#location-form').fadeIn();
@@ -139,19 +125,18 @@ $(function(){
             $(this).val("");
         }
     });
-    
+
+    // Process address geocoding
+    var query = {% if address %}'{{ address }}'{% else %}null{% endif %};
+
+    // Decide what location info to use
+    if (query) {
+        geocode(query);
+    } else if (navigator.geolocation) {
+        navigator.geolocation.getCurrentPosition(exportPosition, errorPosition);
+    } else {
+        // If the browser isn't geo-capable, tell the user.
+        $('#georesults').html('<p>Your browser does not support geolocation.</p>');
+    }
 });
-
-// And so it begins...
-var query = {% if address %}'{{ address }}'{% else %}null{% endif %};
-
-// Decide what location info to use
-if ( query ) {
-    geocode(query);
-} else if (navigator.geolocation) {
-    navigator.geolocation.getCurrentPosition(exportPosition, errorPosition);
-} else {
-    // If the browser isn't geo-capable, tell the user.
-    $('#georesults').html('<p>Your browser does not support geolocation.</p>');
-}
 
