@@ -3,6 +3,7 @@ var geocoder = new google.maps.Geocoder();
 var map = null;
 
 var user_marker = null;
+var displayed_slug = null;
 var displayed_polygon = null;
 
 var boundaries = new Array();
@@ -70,27 +71,49 @@ function process_location(lat, lng) {
     get_boundaries(lat, lng);
 }
 
-// User boundary service to lookup what areas the location falls within
+// Use boundary service to lookup what areas the location falls within
 function get_boundaries(lat, lng) {
     var table_html = '<h3>Your location falls within:</h3><table id="boundaries" border="0" cellpadding="0" cellspacing="0">';
     var query_url = 'http://{{ domain }}/api/1.0/boundary/?format=jsonp&limit=100&contains='+lat+','+lng+'&callback=?';
-    
+
+    displayed_kind = null;
+    for_display = null;
+
+    if (displayed_polygon != null) {
+        // Hide old polygon
+        displayed_kind = boundaries[displayed_slug].kind;
+        displayed_polygon.setMap(null);
+        displayed_polygon = null;
+        displayed_slug = null;
+    }
+
+    // TODO: clear old boundaries?
+
     $.getJSON(query_url, function(data) {
         $.each(data.objects, function(i, obj) {
             boundaries[obj.slug] = obj;
             table_html += '<tr><td>' + obj.kind + '</td><td><strong><a href="javascript:display_boundary(\'' + obj.slug + '\');">' + obj.name + '</a></strong></td></td>';
+
+            // Try to display a new polygon of the same kind as the last shown
+            if (displayed_kind != null && obj.kind == displayed_kind) {
+                for_display = obj; 
+            }
         });
         table_html += '</table>';
         $('#area-lookup').html(table_html);
+
+        if (for_display != null) {
+            display_boundary(for_display.slug, true);
+        }
     });
-    
 }
 
-function display_boundary(slug) {
+function display_boundary(slug, no_fit) {
     // Clear old polygons
     if (displayed_polygon != null) {
         displayed_polygon.setMap(null);
         displayed_polygon = null;
+        displayed_slug = null;
     }
 
     // Construct new polygons
@@ -121,8 +144,12 @@ function display_boundary(slug) {
 		fillOpacity: 0.25
 	});
 
+    displayed_slug = slug;
     displayed_polygon.setMap(map);
-    map.fitBounds(bounds);
+
+    if (!no_fit) {
+        map.fitBounds(bounds);
+    }
 }
 
 $(document).ready(function() {
