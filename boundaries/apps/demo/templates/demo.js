@@ -2,58 +2,72 @@
 var geocoder = new google.maps.Geocoder();
 var map = null;
 
-var user_marker = new google.maps.Marker();
+var user_marker = null;
 var displayed_polygon = null;
+
 var boundaries = new Array();
 
 function init_map(lat, lng) {
-    var ll = new google.maps.LatLng(lat, lng);
+    if (map == null) {
+        var ll = new google.maps.LatLng(lat, lng);
 
-    var map_options = {
-        zoom: 14,
-        center: ll,
-        mapTypeId: google.maps.MapTypeId.ROADMAP
-    };
+        var map_options = {
+            zoom: 14,
+            center: ll,
+            mapTypeId: google.maps.MapTypeId.ROADMAP
+        };
 
-    map = new google.maps.Map(document.getElementById("map_canvas"), map_options);
+        map = new google.maps.Map(document.getElementById("map_canvas"), map_options);
+    }
+
+    map.panTo(new google.maps.LatLng(lat, lng));
 }
 
 function show_user_marker(lat, lng) {
+    if (user_marker == null) {
+        user_marker = new google.maps.Marker();
+
+        user_marker.setDraggable(true);
+        user_marker.setMap(map);
+
+        google.maps.event.addListener(user_marker, 'dragend', function() {
+            ll = user_marker.getPosition();
+            process_location(ll.lat(), ll.lng());
+        });
+    }
+
     user_marker.setPosition(new google.maps.LatLng(lat, lng));
-    user_marker.setMap(map);
 }
 
 function geocode(address) {
-    // geocode request
     gr = { 'address': address };
     geocoder.geocode(gr, handle_geocode);
 }
 
 function handle_geocode(results, status) {
-    position = new Object();
-    position.coords = new Object();
-    
     lat = results[0].geometry.location.lat();
     lng = results[0].geometry.location.lng();
     
-    $('#georesults').html(
-        '<div id="map_canvas" style="float: right; width: 440px; height: 250px; border: 2px solid #ccc"></div>' +
-        '<p>' 
-                + 'Latitude: ' + lat + '<br />'
-                + 'Longitude: ' + lng + '<br />'
-        + '</p>'
-    );
-
-    if (map == null) {
-        init_map(lat, lng);
-    }
-    
-    show_user_marker(lat, lng);
-    get_boundaries(lat, lng);
+    process_location(lat, lng);
 }
 
-function errorPosition() {
-    $('#georesults').html('<p>The page could not get your location.</p>');
+function geolocation_success(position) {
+    process_location(position.coords.latitude, position.coords.longitude)
+}
+
+function geolocation_error() {
+    $('#resultinfo').html('The page could not get your location.');
+}
+
+function process_location(lat, lng) {
+    $('#resultinfo').html(
+        'Latitude: ' + lat + '<br />' +
+        'Longitude: ' + lng + '<br />'
+    );
+
+    init_map(lat, lng);
+    show_user_marker(lat, lng);
+    get_boundaries(lat, lng);
 }
 
 // User boundary service to lookup what areas the location falls within
@@ -133,7 +147,7 @@ $(document).ready(function() {
     if (query) {
         geocode(query);
     } else if (navigator.geolocation) {
-        navigator.geolocation.getCurrentPosition(exportPosition, errorPosition);
+        navigator.geolocation.getCurrentPosition(geolocation_success, geolocation_error);
     } else {
         // If the browser isn't geo-capable, tell the user.
         $('#georesults').html('<p>Your browser does not support geolocation.</p>');
