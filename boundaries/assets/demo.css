@@ -6,7 +6,7 @@ h1, h2, h3, h4 {
     font-family: Arial, Helvetica, sans-serif;
 }
 
-table tr:nth-child(even) td {
+table tr:nth-child(even) {
     background:#eff1f3;
 }
 
@@ -17,6 +17,10 @@ table tr:nth-child(even) td {
 
 #boundaries {
     width: 100%;
+}
+
+#boundaries .selected {
+    background:#FF7800;
 }
 
 #boundaries td {

@@ -92,7 +92,7 @@ function get_boundaries(lat, lng) {
     $.getJSON(query_url, function(data) {
         $.each(data.objects, function(i, obj) {
             boundaries[obj.slug] = obj;
-            table_html += '<tr><td>' + obj.kind + '</td><td><strong><a href="javascript:display_boundary(\'' + obj.slug + '\');">' + obj.name + '</a></strong></td></td>';
+            table_html += '<tr id="' + obj.slug + '"><td>' + obj.kind + '</td><td><strong><a href="javascript:display_boundary(\'' + obj.slug + '\');">' + obj.name + '</a></strong></td></td>';
 
             // Try to display a new polygon of the same kind as the last shown
             if (displayed_kind != null && obj.kind == displayed_kind) {
@@ -114,6 +114,8 @@ function display_boundary(slug, no_fit) {
         displayed_polygon.setMap(null);
         displayed_polygon = null;
         displayed_slug = null;
+
+        $("#boundaries .selected").removeClass("selected");
     }
 
     // Construct new polygons
@@ -146,6 +148,8 @@ function display_boundary(slug, no_fit) {
 
     displayed_slug = slug;
     displayed_polygon.setMap(map);
+
+    $("#boundaries #" + slug).addClass("selected");
 
     if (!no_fit) {
         map.fitBounds(bounds);
