@@ -1,3 +1,5 @@
+var geolocate_supported = true; // until prove false
+
 var geocoder = new google.maps.Geocoder();
 var map = null;
 
@@ -63,6 +65,18 @@ function handle_geocode(results, status) {
     process_location(lat, lng);
 }
 
+function geolocate() {
+    if (navigator.geolocation) {
+        navigator.geolocation.getCurrentPosition(geolocation_success, geolocation_error);
+    } else {
+        process_location(41.890498, -87.62361);
+
+        $('#resultinfo').html('Your browser does not support automatically determining your location so we\'re showing you where <a href="http://twitter.com/#!/coloneltribune">@ColonelTribune</a> lives.');
+
+        geolocate_supported = false;
+    }
+}
+
 function geolocation_success(position) {
     process_location(position.coords.latitude, position.coords.longitude)
 }
@@ -86,7 +100,7 @@ function process_location(lat, lng) {
 
 // Use boundary service to lookup what areas the location falls within
 function get_boundaries(lat, lng) {
-    var table_html = '<h3>This location falls within:</h3><table id="boundaries" border="0" cellpadding="0" cellspacing="0">';
+    var table_html = '<h3>This location is within:</h3><table id="boundaries" border="0" cellpadding="0" cellspacing="0">';
     var query_url = 'http://{{ domain }}/api/1.0/boundary/?format=jsonp&limit=100&contains='+lat+','+lng+'&callback=?';
 
     displayed_kind = null;
@@ -172,9 +186,8 @@ function display_boundary(slug, no_fit) {
 
 function show_search(query) {
     $('#not-where-i-am').hide();
-    $('#use-current-location').fadeIn();
-    $('#form-wrapper').css('height', '60px');
-    $('#location-form input[type=text]').val(query);
+    if (geolocate_supported) { $('#use-current-location').fadeIn(); }
+    $('#location-form #address').val(query);
     $('#location-form').fadeIn();
 }
 
@@ -182,9 +195,8 @@ function show_search(query) {
 
 function not_where_i_am() {
     $(this).hide();
-    $('#form-wrapper').css('height', '60px');
     $('#location-form').fadeIn();
-    $('#use-current-location').fadeIn();
+    if (geolocate_supported) { $('#use-current-location').fadeIn(); }
 }
 
 function use_current_location() {
@@ -192,13 +204,13 @@ function use_current_location() {
 }
 
 function search_focused() {
-    if(this.value == 'Enter an address') {
+    if(this.value == '{{ default_search_text }}') {
         $(this).val("");
     }
 }
 
 function address_search() {
-    geocode($("#address").val());
+    geocode($("#location-form #address").val());
 
     return false;
 }
@@ -209,13 +221,7 @@ $(document).ready(function() {
     $('#use-current-location').click(use_current_location);
     $('#location-form input[type=text]').focus(search_focused);
     $('#location-form').submit(address_search)
-    
-    // Decide what location info to use
-    if (navigator.geolocation) {
-        navigator.geolocation.getCurrentPosition(geolocation_success, geolocation_error);
-    } else {
-        // If the browser isn't geo-capable, tell the user.
-        $('#georesults').html('<p>Your browser does not support automatically determining your location.</p>');
-    }
+   
+    geolocate()
 });
 

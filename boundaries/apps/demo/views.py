@@ -14,6 +14,7 @@ def index(request):
         pass
 
     context['domain'] = settings.MY_SITE_DOMAIN
+    context['default_search_text'] = 'Enter an address or drag the pin on the map'
     context['demo_js'] = render_to_string('demo.js', context)
 
     mobile = detect_mobile(request)
