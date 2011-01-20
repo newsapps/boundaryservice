@@ -1,4 +1,3 @@
-// Geocoder stuff
 var geocoder = new google.maps.Geocoder();
 var map = null;
 
@@ -41,7 +40,7 @@ function show_user_marker(lat, lng) {
 }
 
 function geocode(query) {
-    if ( typeof(query) == 'string' ) {
+    if (typeof(query) == 'string') {
         pattr = /\sil\s|\sillinois\s/gi;
         match = query.match(pattr);
         if (!match) {
@@ -69,7 +68,9 @@ function geolocation_success(position) {
 }
 
 function geolocation_error() {
-    $('#resultinfo').html('The page could not get your location.');
+    process_location(41.890498, -87.62361);
+
+    $('#resultinfo').html('We could not automatically determine your location so we\'re showing you where <a href="http://twitter.com/#!/coloneltribune">@ColonelTribune</a> lives.');
 }
 
 function process_location(lat, lng) {
@@ -85,7 +86,7 @@ function process_location(lat, lng) {
 
 // Use boundary service to lookup what areas the location falls within
 function get_boundaries(lat, lng) {
-    var table_html = '<h3>Your location falls within:</h3><table id="boundaries" border="0" cellpadding="0" cellspacing="0">';
+    var table_html = '<h3>This location falls within:</h3><table id="boundaries" border="0" cellpadding="0" cellspacing="0">';
     var query_url = 'http://{{ domain }}/api/1.0/boundary/?format=jsonp&limit=100&contains='+lat+','+lng+'&callback=?';
 
     displayed_kind = null;
