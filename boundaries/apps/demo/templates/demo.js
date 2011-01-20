@@ -100,7 +100,8 @@ function get_boundaries(lat, lng) {
         displayed_slug = null;
     }
 
-    // TODO: clear old boundaries?
+    // Clear old boundaries
+    boundaries.length = 0;
 
     $.getJSON(query_url, function(data) {
         $.each(data.objects, function(i, obj) {
