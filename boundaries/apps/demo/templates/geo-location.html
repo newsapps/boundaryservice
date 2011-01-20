@@ -4,7 +4,7 @@
 <html> 
     <head>    
         <title>You are here.</title> 
-        <link rel="stylesheet" type="text/css" href="{% build_media_url '/site_media/demo.css' %}" /> 
+        <link rel="stylesheet" type="text/css" href="{% build_media_url '/site_media/css/demo.css' %}" /> 
     </head> 
     <body> 
         <div id="wrap"> 
@@ -17,8 +17,8 @@
                     <a href="javascript:void(0)" id="use-current-location">Use my current location instead</a>
                     <a href="javascript:void(0)" id="not-where-i-am">Wait, that's not where I am</a>
                 </div>
-                <div id="georesults" style="background-color: #efefef; padding: 15px 15px 0 15px; width: 910px;" class="clearfix">
-                    <div id="map_canvas" style="float: right; width: 100%; height: 280px; border: 2px solid #ccc; margin: 0 0 10px 0;"></div>
+                <div id="georesults" class="clearfix">
+                    <div id="map_canvas"></div>
                     <p id="resultinfo"> 
                         Waiting for browser ...
                     </p> 
@@ -30,7 +30,6 @@
                 <script type="text/javascript">
                     {{ demo_js }}
                 </script> 
-                <hr /> 
         </div> 
     </body> 
 </html> 
