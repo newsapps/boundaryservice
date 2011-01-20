@@ -176,38 +176,44 @@ function show_search(query) {
     $('#location-form').fadeIn();
 }
 
+/* DOM EVENT HANDLERS */
+
+function not_where_i_am() {
+    $(this).hide();
+    $('#form-wrapper').css('height', '60px');
+    $('#location-form').fadeIn();
+    $('#use-current-location').fadeIn();
+}
+
+function use_current_location() {
+    window.location = 'http://' + window.location.host;
+}
+
+function search_focused() {
+    if(this.value == 'Enter an address') {
+        $(this).val("");
+    }
+}
+
+function address_search() {
+    geocode($("#address").val());
+
+    return false;
+}
+
 $(document).ready(function() {
     // Setup handlers
-    $('#not-where-i-am').click(function() {
-        $(this).hide();
-        $('#form-wrapper').css('height', '60px');
-        $('#location-form').fadeIn();
-        $('#use-current-location').fadeIn();
-    });
-    $('#use-current-location').click(function() {
-        home = window.location.host;
-        window.location = 'http://' + home;
-    });
-
-    // Clear input box on click, replace value on blur
-    defaultval = $('#location-form input[type=text]').val(); 
-    $('#location-form input[type=text]').focus(function() {
-        if( this.value == defaultval ) {
-            $(this).val("");
-        }
-    });
+    $('#not-where-i-am').click(not_where_i_am);
+    $('#use-current-location').click(use_current_location);
+    $('#location-form input[type=text]').focus(search_focused);
+    $('#location-form').submit(address_search)
     
-    // Process address geocoding
-    var query = {% if address %}'{{ address }}';{% else %}null{% endif %};
-
     // Decide what location info to use
-    if (query) {
-        geocode(query);
-    } else if (navigator.geolocation) {
+    if (navigator.geolocation) {
         navigator.geolocation.getCurrentPosition(geolocation_success, geolocation_error);
     } else {
         // If the browser isn't geo-capable, tell the user.
-        $('#georesults').html('<p>Your browser does not support geolocation.</p>');
+        $('#georesults').html('<p>Your browser does not support automatically determining your location.</p>');
     }
 });
 
