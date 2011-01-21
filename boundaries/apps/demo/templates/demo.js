@@ -22,7 +22,10 @@ function init_map(lat, lng) {
         map = new google.maps.Map(document.getElementById("map_canvas"), map_options);
     }
 
-    map.panTo(new google.maps.LatLng(lat, lng));
+    var center = new google.maps.LatLng(lat, lng);
+    map.panTo(center);
+
+    resize_listener(center);
 }
 
 function show_user_marker(lat, lng) {
@@ -96,6 +99,7 @@ function process_location(lat, lng) {
     init_map(lat, lng);
     show_user_marker(lat, lng);
     get_boundaries(lat, lng);
+    
 }
 
 // Use boundary service to lookup what areas the location falls within
@@ -192,6 +196,23 @@ function show_search(query) {
 }
 
 /* DOM EVENT HANDLERS */
+function resize_listener(center) {
+    $(this).bind('resize_end', function(){ 
+        map.panTo(center); 
+    });
+}
+
+function resize_end_trigger() {
+    $(window).resize(function() {
+        if (this.resizeto) { 
+            clearTimeout(this.resizeto) 
+            };
+
+        this.resizeto = setTimeout(function() { 
+            $(this).trigger('resize_end'); 
+            }, 500);
+    });
+}
 
 function not_where_i_am() {
     $(this).hide();
@@ -221,7 +242,9 @@ $(document).ready(function() {
     $('#use-current-location').click(use_current_location);
     $('#location-form input[type=text]').focus(search_focused);
     $('#location-form').submit(address_search)
-   
-    geolocate()
+    
+    resize_end_trigger();
+    
+    geolocate();
 });
 
