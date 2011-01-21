@@ -8,7 +8,7 @@ class Migration(DataMigration):
 
     def forwards(self, orm):
         for boundary in orm.Boundary.objects.all():
-            boundary.centroid = boundary.simple_shape.centroid
+            boundary.centroid = boundary.shape.centroid
             boundary.save()
 
 
