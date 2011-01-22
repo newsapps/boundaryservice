@@ -63,8 +63,8 @@ function handle_geocode(results, status) {
     lng = results[0].geometry.location.lng();
 
     normalized_address = results[0].formatted_address;
-    show_search(normalized_address);
-
+    $('#location-form #address').val(normalized_address);
+    
     process_location(lat, lng);
 }
 
@@ -82,6 +82,9 @@ function geolocate() {
 
 function geolocation_success(position) {
     process_location(position.coords.latitude, position.coords.longitude)
+
+    geocode(new google.maps.LatLng(position.coords.latitude, position.coords.longitude))
+    hide_search()
 }
 
 function geolocation_error() {
@@ -99,7 +102,6 @@ function process_location(lat, lng) {
     init_map(lat, lng);
     show_user_marker(lat, lng);
     get_boundaries(lat, lng);
-    
 }
 
 // Use boundary service to lookup what areas the location falls within
@@ -188,11 +190,16 @@ function display_boundary(slug, no_fit) {
     }
 }
 
-function show_search(query) {
+function show_search() {
     $('#not-where-i-am').hide();
     if (geolocate_supported) { $('#use-current-location').fadeIn(); }
-    $('#location-form #address').val(query);
-    $('#location-form').fadeIn();
+    $('#location-form').slideDown();
+}
+
+function hide_search() {
+    $('#not-where-i-am').show();
+    $('#use-current-location').hide()
+    $('#location-form').slideUp();
 }
 
 function switch_page(page_id) {
@@ -221,13 +228,11 @@ function resize_end_trigger() {
 }
 
 function not_where_i_am() {
-    $(this).hide();
-    $('#location-form').fadeIn();
-    if (geolocate_supported) { $('#use-current-location').fadeIn(); }
+    show_search();
 }
 
 function use_current_location() {
-    window.location = 'http://' + window.location.host;
+    geolocate();
 }
 
 function search_focused() {
