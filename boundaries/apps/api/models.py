@@ -59,6 +59,9 @@ class Boundary(SluggedModel):
         help_text='The geometry of this boundary in EPSG:4269 projection.')
     simple_shape = models.MultiPolygonField(srid=4269,
         help_text='The geometry of this boundary in EPSG:4269 projection and simplified to 0.0001 tolerance.')
+    centroid = models.PointField(srid=4269,
+        null=True,
+        help_text='The centroid (weighted center) of this boundary in EPSG:4269 projection.')
     
     objects = models.GeoManager()
 

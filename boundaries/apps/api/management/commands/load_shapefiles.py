@@ -133,7 +133,8 @@ class Command(BaseCommand):
                     display_name=display_name,
                     metadata=metadata,
                     shape=geometry.wkt,
-                    simple_shape=simple_geometry.wkt)
+                    simple_shape=simple_geometry.wkt,
+                    centroid=geometry.geos.centroid)
 
             log.info('Saved %i %s.' % (set.count, kind))
 

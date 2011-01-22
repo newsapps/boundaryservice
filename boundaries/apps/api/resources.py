@@ -54,18 +54,22 @@ class JSONOnlySerializer(Serializer):
         data = self.to_simple(data, options)
         
         # Go through hackery hell to encode geometries as geojson instead of wkt
-        def reencode_shape(obj):
+        def process_geojson(obj):
             if 'simple_shape' in obj:
                 geom = GEOSGeometry(obj['simple_shape'])
                 obj['simple_shape'] = simplejson.loads(geom.geojson)
+            
+            if 'centroid' in obj:
+                geom = GEOSGeometry(obj['centroid'])
+                obj['centroid'] = simplejson.loads(geom.geojson)
 
         # Lists
         if 'objects' in data:
             for obj in data['objects']:
-                reencode_shape(obj)
+                process_geojson(obj)
         # Single objects
         elif isinstance(data, dict):
-            reencode_shape(data)
+            process_geojson(data)
         
         return simplejson.dumps(data, cls=json.DjangoJSONEncoder, sort_keys=True)
 
