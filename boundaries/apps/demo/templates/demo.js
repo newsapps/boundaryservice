@@ -195,6 +195,12 @@ function show_search(query) {
     $('#location-form').fadeIn();
 }
 
+function switch_page(page_id) {
+    $(".page-content").hide()
+    $("#" + page_id + "-page").show()
+    window.location.hash = page_id
+}
+
 /* DOM EVENT HANDLERS */
 function resize_listener(center) {
     $(this).bind('resize_end', function(){ 
@@ -244,6 +250,12 @@ $(document).ready(function() {
     $('#location-form').submit(address_search)
     
     resize_end_trigger();
+    
+    if (window.location.hash != "") {
+        switch_page(window.location.hash.substring(1));
+    } else {
+        switch_page("demo");
+    }
     
     geolocate();
 });

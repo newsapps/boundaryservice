@@ -16,4 +16,4 @@ def index(request):
     context['domain'] = settings.MY_SITE_DOMAIN
     context['default_search_text'] = 'Enter an address or drag the pin on the map'
     context['demo_js'] = render_to_string('demo.js', context)
-    return render_to_response('/geo-location.html', context)
+    return render_to_response('index.html', context)
