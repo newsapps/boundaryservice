@@ -67,12 +67,10 @@ TEMPLATE_CONTEXT_PROCESSORS = (
 
 MIDDLEWARE_CLASSES = (
     'django.middleware.gzip.GZipMiddleware',
-    'django.middleware.cache.UpdateCacheMiddleware',
     'django.middleware.common.CommonMiddleware',
     'debug_toolbar.middleware.DebugToolbarMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
-    'django.middleware.cache.FetchFromCacheMiddleware',
 )
 
 ROOT_URLCONF = 'boundaries.configs.common.urls'
@@ -118,7 +116,12 @@ DEFAULT_FROM_EMAIL = 'do.not.reply@tribune.com'
 # Caching
 CACHE_MIDDLEWARE_KEY_PREFIX='boundaries'
 CACHE_MIDDLEWARE_SECONDS=90 * 60 # 90 minutes
-CACHE_BACKEND="dummy:///"
+
+CACHES = {
+    'default': {
+        'BACKEND': 'django.core.cache.backends.locmem.LocMemCache',
+    }
+}
 
 # Analytics
 OMNITURE_PAGE_NAME = "boundaries"

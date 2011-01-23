@@ -173,11 +173,11 @@ function display_boundary(slug, no_fit) {
 
     displayed_polygon = new google.maps.Polygon({
         paths: paths,
-        strokeColor: "#FF7800",
-        strokeOpacity: 1,
-        strokeWeight: 2,
-        fillColor: "#46461F",
-        fillOpacity: 0.25
+        strokeColor: "#244f79",
+        strokeOpacity: 0.8,
+        strokeWeight: 3,
+        fillColor: "#244f79",
+        fillOpacity: 0.2
     });
 
     displayed_slug = slug;
