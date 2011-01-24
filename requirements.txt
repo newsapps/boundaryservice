@@ -5,7 +5,7 @@ django==1.2.3
 django-debug-toolbar
 psycopg2
 python-memcached
--e git+https://github.com/toastdriven/django-tastypie.git@07575c1ee9#egg=tastypie
+-e git+http://github.com/onyxfish/django-tastypie.git@474e6cbaa9#egg=tastypie
 python-dateutil
 mimeparse
 lxml
