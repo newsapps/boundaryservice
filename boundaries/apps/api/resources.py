@@ -8,6 +8,7 @@ from django.core.serializers import json
 from django.utils import simplejson
 from tastypie import fields
 from tastypie.bundle import Bundle
+from tastypie.fields import ApiField, CharField
 from tastypie.resources import ModelResource
 from tastypie.serializers import Serializer
 from tastypie.utils import trailing_slash
@@ -15,6 +16,39 @@ from tastypie.utils import trailing_slash
 from boundaries.apps.api.authentication import NoOpApiKeyAuthentication
 from boundaries.apps.api.models import BoundarySet, Boundary
 from boundaries.apps.api.throttle import AnonymousThrottle
+from boundaries.lib.fields import ListField, JSONField
+
+class ListApiField(ApiField):
+    """
+    Custom ApiField for dealing with data from custom ListFields.
+    """
+    dehydrated_type = 'list'
+    help_text = 'Delimited list of items.'
+    
+    def dehydrate(self, obj):
+        return self.convert(super(ListApiField, self).dehydrate(obj))
+    
+    def convert(self, value):
+        if value is None:
+            return None
+        
+        return value
+
+class JSONApiField(ApiField):
+    """
+    Custom ApiField for dealing with data from custom JSONFields.
+    """
+    dehydrated_type = 'json'
+    help_text = 'JSON structured data.'
+    
+    def dehydrate(self, obj):
+        return self.convert(super(JSONApiField, self).dehydrate(obj))
+    
+    def convert(self, value):
+        if value is None:
+            return None
+        
+        return value
 
 class SluggedResource(ModelResource):
     """
@@ -46,6 +80,18 @@ class SluggedResource(ModelResource):
             kwargs['api_name'] = self._meta.api_name
         
         return self._build_reverse_url("api_dispatch_detail", kwargs=kwargs)
+
+    @classmethod
+    def api_field_from_django_field(cls, f, default=CharField):
+        """
+        Overrides default field handling to support custom ListField and JSONField.
+        """
+        if type(f) == ListField:
+            return ListApiField
+        elif type(f) == JSONField:
+            return JSONApiField
+    
+        return super(SluggedResource, cls).api_field_from_django_field(f, default)
 
 class JSONOnlySerializer(Serializer):
     def __init__(self):
