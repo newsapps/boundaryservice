@@ -14,7 +14,7 @@ from tastypie.utils import trailing_slash
 
 from boundaries.apps.api.authentication import NoOpApiKeyAuthentication
 from boundaries.apps.api.models import BoundarySet, Boundary
-from boundaries.apps.api.throttling import AnonymousThrottle
+from boundaries.apps.api.throttle import AnonymousThrottle
 
 class SluggedResource(ModelResource):
     """

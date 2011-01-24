@@ -3,7 +3,7 @@ var geolocate_supported = true; // until prove false
 var geocoder = new google.maps.Geocoder();
 var southwest_limit = new google.maps.LatLng(36.970298, -91.513079);
 var northeast_limit = new google.maps.LatLng(42.508338, -87.019935);
-var bounding_box = new google.maps.LatLngBounds(IL_SW, IL_NE);
+var bounding_box = new google.maps.LatLngBounds(southwest_limit, northeast_limit);
 
 var map = null;
 
