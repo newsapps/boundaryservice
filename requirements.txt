@@ -1,5 +1,5 @@
 fabric==0.9.3
-django==1.2.3
+-e git+https://github.com/django/django.git@1.2.3#egg=django
 -e git+ssh://git@tribune.unfuddle.com/tribune/newsapps.git@9b386fca#egg=newsapps
 -e svn+http://geopy.googlecode.com/svn/tags/release-0.93#egg=geopy
 django-debug-toolbar
