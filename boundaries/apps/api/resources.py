@@ -85,7 +85,7 @@ class BoundarySetResource(SluggedResource):
         excludes = ['id', 'singular', 'kind_first']
         allowed_methods = ['get']
         authentication = NoOpApiKeyAuthentication()
-        throttle = AnonymousThrottle(throttle_at=5) 
+        throttle = AnonymousThrottle(throttle_at=100) 
 
 class BoundaryResource(SluggedResource):
     set = fields.ForeignKey(BoundarySetResource, 'set')
@@ -97,7 +97,7 @@ class BoundaryResource(SluggedResource):
         excludes = ['id', 'display_name', 'shape']
         allowed_methods = ['get']
         authentication = NoOpApiKeyAuthentication()
-        throttle = AnonymousThrottle(throttle_at=5) 
+        throttle = AnonymousThrottle(throttle_at=100) 
 
     def build_filters(self, filters=None):
         """
