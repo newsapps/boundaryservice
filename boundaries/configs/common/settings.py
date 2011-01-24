@@ -132,6 +132,8 @@ OMNITURE_APP_NAME = "Elections application"
 ENABLE_GOOGLE_ANALYTICS = True
 GOOGLE_ANALYTICS_KEY = "UA-9792248-1"
 
+API_DOMAIN = 'localhost:8001'
+
 # Logging
 logging.basicConfig(
     level=logging.DEBUG,

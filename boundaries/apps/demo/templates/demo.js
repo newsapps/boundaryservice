@@ -111,7 +111,7 @@ function process_location(lat, lng) {
 // Use boundary service to lookup what areas the location falls within
 function get_boundaries(lat, lng) {
     var table_html = '<h3>This location is within:</h3><table id="boundaries" border="0" cellpadding="0" cellspacing="0">';
-    var query_url = 'http://{{ domain }}/api/1.0/boundary/?format=jsonp&limit=100&contains='+lat+','+lng+'&callback=?';
+    var query_url = 'http://{{ settings.API_DOMAIN }}/1.0/boundary/?format=jsonp&limit=100&contains='+lat+','+lng+'&callback=?';
 
     displayed_kind = null;
     for_display = null;

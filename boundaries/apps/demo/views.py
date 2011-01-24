@@ -5,7 +5,7 @@ from django.shortcuts import render_to_response
 from django.template.loader import render_to_string
 
 def index(request):
-    context = {}
+    context = { 'settings': settings }
 
     try:
         address = request.REQUEST.get('address')
@@ -13,7 +13,6 @@ def index(request):
     except KeyError:
         pass
 
-    context['domain'] = settings.MY_SITE_DOMAIN
     context['default_search_text'] = 'Enter an address or drag the pin on the map'
     context['demo_js'] = render_to_string('demo.js', context)
     return render_to_response('index.html', context)
