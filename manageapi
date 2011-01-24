@@ -1,0 +1,2 @@
+#!/bin/sh
+python ./boundaries/configs_api/${DEPLOYMENT_TARGET:="common"}/manage.py $*

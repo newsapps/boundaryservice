@@ -1,8 +1,8 @@
 <VirtualHost *:80>
-    ServerName boundaries.beta.tribapps.com
-    ServerAlias www.boundaries.beta.tribapps.com
+    ServerName api.boundaries.beta.tribapps.com
+    ServerAlias www.api.boundaries.beta.tribapps.com
 
-    WSGIScriptAlias / /home/newsapps/sites/boundaries/repository/boundaries/configs/staging/staging.wsgi
+    WSGIScriptAlias / /home/newsapps/sites/boundaries/repository/boundaries/configs_api/staging/staging.wsgi
     
     Redirect permanent /favicon.ico http://media-beta.tribapps.com/boundaries/na_media/favicon.ico
     
@@ -19,7 +19,7 @@
     RewriteEngine on
     # canonical hostname
     RewriteCond %{HTTP_HOST} ^www [NC] 
-    RewriteRule ^/(.*)  http://boundaries.beta.tribapps.com/$1 [L,R]
+    RewriteRule ^/(.*)  http://api.boundaries.beta.tribapps.com/$1 [L,R]
     
     RewriteCond %{REQUEST_URI} /maintenance.html$ 
     RewriteRule $ / [R=302,L]
