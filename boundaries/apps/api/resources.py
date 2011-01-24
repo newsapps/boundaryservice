@@ -12,7 +12,9 @@ from tastypie.resources import ModelResource
 from tastypie.serializers import Serializer
 from tastypie.utils import trailing_slash
 
+from boundaries.apps.api.authentication import NoOpApiKeyAuthentication
 from boundaries.apps.api.models import BoundarySet, Boundary
+from boundaries.apps.api.throttling import AnonymousThrottle
 
 class SluggedResource(ModelResource):
     """
@@ -82,6 +84,8 @@ class BoundarySetResource(SluggedResource):
         resource_name = 'boundary-set'
         excludes = ['id', 'singular', 'kind_first']
         allowed_methods = ['get']
+        authentication = NoOpApiKeyAuthentication()
+        throttle = AnonymousThrottle(throttle_at=5) 
 
 class BoundaryResource(SluggedResource):
     set = fields.ForeignKey(BoundarySetResource, 'set')
@@ -92,6 +96,8 @@ class BoundaryResource(SluggedResource):
         resource_name = 'boundary'
         excludes = ['id', 'display_name', 'shape']
         allowed_methods = ['get']
+        authentication = NoOpApiKeyAuthentication()
+        throttle = AnonymousThrottle(throttle_at=5) 
 
     def build_filters(self, filters=None):
         """

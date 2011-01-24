@@ -26,7 +26,10 @@ function init_map(lat, lng) {
         map = new google.maps.Map(document.getElementById("map_canvas"), map_options);
     }
 
-    map.panTo(new google.maps.LatLng(lat, lng));
+    var center = new google.maps.LatLng(lat, lng);
+    map.panTo(center);
+
+    resize_listener(center);
 }
 
 function show_user_marker(lat, lng) {
@@ -64,8 +67,8 @@ function handle_geocode(results, status) {
     lng = results[0].geometry.location.lng();
 
     normalized_address = results[0].formatted_address;
-    show_search(normalized_address);
-
+    $('#location-form #address').val(normalized_address);
+    
     process_location(lat, lng);
 }
 
@@ -83,6 +86,9 @@ function geolocate() {
 
 function geolocation_success(position) {
     process_location(position.coords.latitude, position.coords.longitude)
+
+    geocode(new google.maps.LatLng(position.coords.latitude, position.coords.longitude))
+    hide_search()
 }
 
 function geolocation_error() {
@@ -171,11 +177,11 @@ function display_boundary(slug, no_fit) {
 
     displayed_polygon = new google.maps.Polygon({
         paths: paths,
-        strokeColor: "#FF7800",
-        strokeOpacity: 1,
-        strokeWeight: 2,
-        fillColor: "#46461F",
-        fillOpacity: 0.25
+        strokeColor: "#244f79",
+        strokeOpacity: 0.8,
+        strokeWeight: 3,
+        fillColor: "#244f79",
+        fillOpacity: 0.2
     });
 
     displayed_slug = slug;
@@ -188,23 +194,49 @@ function display_boundary(slug, no_fit) {
     }
 }
 
-function show_search(query) {
+function show_search() {
     $('#not-where-i-am').hide();
     if (geolocate_supported) { $('#use-current-location').fadeIn(); }
-    $('#location-form #address').val(query);
-    $('#location-form').fadeIn();
+    $('#location-form').slideDown();
+}
+
+function hide_search() {
+    $('#not-where-i-am').show();
+    $('#use-current-location').hide()
+    $('#location-form').slideUp();
+}
+
+function switch_page(page_id) {
+    $(".page-content").hide()
+    $("#" + page_id + "-page").show()
+    window.location.hash = page_id
 }
 
 /* DOM EVENT HANDLERS */
+function resize_listener(center) {
+    $(this).bind('resize_end', function(){ 
+        map.panTo(center); 
+    });
+}
+
+function resize_end_trigger() {
+    $(window).resize(function() {
+        if (this.resizeto) { 
+            clearTimeout(this.resizeto) 
+            };
+
+        this.resizeto = setTimeout(function() { 
+            $(this).trigger('resize_end'); 
+            }, 500);
+    });
+}
 
 function not_where_i_am() {
-    $(this).hide();
-    $('#location-form').fadeIn();
-    if (geolocate_supported) { $('#use-current-location').fadeIn(); }
+    show_search();
 }
 
 function use_current_location() {
-    window.location = 'http://' + window.location.host;
+    geolocate();
 }
 
 function search_focused() {
@@ -225,7 +257,15 @@ $(document).ready(function() {
     $('#use-current-location').click(use_current_location);
     $('#location-form input[type=text]').focus(search_focused);
     $('#location-form').submit(address_search)
-   
-    geolocate()
+    
+    resize_end_trigger();
+    
+    if (window.location.hash != "") {
+        switch_page(window.location.hash.substring(1));
+    } else {
+        switch_page("demo");
+    }
+    
+    geolocate();
 });
 
