@@ -20,5 +20,5 @@
     RewriteCond %{HTTP_HOST} ^www [NC] 
     RewriteRule ^/(.*)  http://api.boundaries.beta.tribapps.com/$1 [L,R]
     
-    Redirect 503
+    Redirect 503 /
 </VirtualHost>
