@@ -1,6 +1,7 @@
 from django.conf.urls.defaults import url
 from django.contrib.gis.geos import GEOSGeometry
 from django.core.serializers import json
+from django.contrib.gis.db.models import GeometryField
 from django.utils import simplejson
 
 from tastypie.bundle import Bundle
@@ -43,6 +44,25 @@ class JSONApiField(ApiField):
         
         return value
 
+class GeometryApiField(ApiField):
+    """
+    Custom ApiField for dealing with data from GeometryFields (by serializing them as GeoJSON) .
+    """
+    dehydrated_type = 'geometry'
+    help_text = 'Geometry data.'
+    
+    def dehydrate(self, obj):
+        return self.convert(super(GeometryApiField, self).dehydrate(obj))
+    
+    def convert(self, value):
+        if value is None:
+            return None
+
+        # Get ready-made geojson serialization and then convert it _back_ to a Python object
+        # so that Tastypie can serialize it as part of the bundle
+        return simplejson.loads(value.geojson)
+
+
 class SluggedResource(ModelResource):
     """
     ModelResource subclass that handles looking up models by slugs rather than IDs.
@@ -83,33 +103,7 @@ class SluggedResource(ModelResource):
             return ListApiField
         elif isinstance(f, JSONField):
             return JSONApiField
+        elif isinstance(f, GeometryField):
+            return GeometryApiField
     
         return super(SluggedResource, cls).api_field_from_django_field(f, default)
-
-class JSONOnlySerializer(Serializer):
-    def __init__(self):
-        Serializer.__init__(self, formats=['json', 'jsonp'], content_types = {'json': 'application/json', 'jsonp': 'text/javascript'})
-
-    def to_json(self, data, options=None):
-        options = options or {}
-        data = self.to_simple(data, options)
-        
-        # Go through hackery hell to encode geometries as geojson instead of wkt
-        def process_geojson(obj):
-            if 'simple_shape' in obj:
-                geom = GEOSGeometry(obj['simple_shape'])
-                obj['simple_shape'] = simplejson.loads(geom.geojson)
-            
-            if 'centroid' in obj:
-                geom = GEOSGeometry(obj['centroid'])
-                obj['centroid'] = simplejson.loads(geom.geojson)
-
-        # Lists
-        if 'objects' in data:
-            for obj in data['objects']:
-                process_geojson(obj)
-        # Single objects
-        elif isinstance(data, dict):
-            process_geojson(data)
-        
-        return simplejson.dumps(data, cls=json.DjangoJSONEncoder, sort_keys=True)

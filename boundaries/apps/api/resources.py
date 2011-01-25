@@ -3,10 +3,11 @@ import re
 from django.contrib.gis.db import models
 from django.contrib.gis.measure import D
 from tastypie import fields
+from tastypie.serializers import Serializer
 
 from boundaries.apps.api.authentication import NoOpApiKeyAuthentication
 from boundaries.apps.api.models import BoundarySet, Boundary
-from boundaries.apps.api.tastyhacks import JSONOnlySerializer, SluggedResource
+from boundaries.apps.api.tastyhacks import SluggedResource
 from boundaries.apps.api.throttle import AnonymousThrottle
 
 class BoundarySetResource(SluggedResource):
@@ -14,7 +15,7 @@ class BoundarySetResource(SluggedResource):
 
     class Meta:
         queryset = BoundarySet.objects.all()
-        serializer = JSONOnlySerializer()
+        serializer = Serializer(formats=['json', 'jsonp'], content_types = {'json': 'application/json', 'jsonp': 'text/javascript'})
         resource_name = 'boundary-set'
         excludes = ['id', 'singular', 'kind_first']
         allowed_methods = ['get']
@@ -26,7 +27,7 @@ class BoundaryResource(SluggedResource):
 
     class Meta:
         queryset = Boundary.objects.all()
-        serializer = JSONOnlySerializer()
+        serializer = Serializer(formats=['json', 'jsonp'], content_types = {'json': 'application/json', 'jsonp': 'text/javascript'})
         resource_name = 'boundary'
         excludes = ['id', 'display_name', 'shape']
         allowed_methods = ['get']
