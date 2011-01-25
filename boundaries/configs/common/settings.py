@@ -68,7 +68,6 @@ TEMPLATE_CONTEXT_PROCESSORS = (
 MIDDLEWARE_CLASSES = (
     'django.middleware.gzip.GZipMiddleware',
     'django.middleware.common.CommonMiddleware',
-    'debug_toolbar.middleware.DebugToolbarMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
 )
@@ -97,10 +96,6 @@ INSTALLED_APPS = (
     'newsapps.templatelib',
     'boundaries.apps.api',
     'boundaries.apps.demo',
-)
-
-FIXTURE_DIRS = (
-   'data/fixtures/',
 )
 
 # Predefined domain
