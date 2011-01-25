@@ -182,58 +182,62 @@ img::-moz-selection {background: transparent;}
 
     .page-content {
         display: none;
-    }
+        
+        h3 { margin-bottom: 10px; }
+        p { margin-bottom: 10px; }
+    
+        table { 
+            width: 100%;
+        }
 
-    table { 
-        width: 100%;
-    }
-    table tr:nth-child(even) {
-        background:#eff1f3;
-    }
+        table tr:nth-child(even) {
+            background:#eff1f3;
+        }
 
-    #form-wrapper {
-        width: 100%;
-        float: left;
-        padding: 10px 0;
-        form#location-form {
-            display: none;
-            input[type="text"] {
-                margin: 5px 0 10px 0;
-                padding: 4px;
-                height: 20px;
-                font-size: 1em;
-                border: 1px solid #ccc;
+        #form-wrapper {
+            width: 100%;
+            float: left;
+            padding: 10px 0;
+            form#location-form {
+                display: none;
+                input[type="text"] {
+                    margin: 5px 0 10px 0;
+                    padding: 4px;
+                    height: 20px;
+                    font-size: 1em;
+                    border: 1px solid #ccc;
+                }
+            }
+            #use-current-location {
+                display: none;
             }
         }
-        #use-current-location {
-            display: none;
-        }
-    }
 
-    #georesults {
-        background-color: #fff; 
-        width: 100%;
-        padding: 10px 0;
-        #resultinfo {
+        #georesults {
+            background-color: #fff; 
             width: 100%;
-            margin: 10px auto 0 auto;
-        }
-        #map_canvas {
-            width: 100%; 
-            height: 280px; 
-            margin: 0 auto;
-        }
-    }
-
-    #boundaries {
-        .selected {
-            background: #6AAFBD;
-        }
-        td {
-            border: 0;
-            width: 50%;
             padding: 10px 0;
-            margin: 0;
+            #resultinfo {
+                width: 100%;
+                margin: 10px auto 0 auto;
+            }
+            #map_canvas {
+                width: 100%; 
+                height: 280px; 
+                margin: 0 auto;
+            }
+        }
+
+        #boundaries {
+            .selected {
+                background: #6AAFBD;
+            }
+            td {
+                border: 0;
+                width: 50%;
+                padding: 10px 0;
+                margin: 0;
+            }
         }
     }
 }

@@ -145,42 +145,46 @@ img::-moz-selection {
     clear: both; }
   #wrap .page-content {
     display: none; }
-  #wrap table {
-    width: 100%; }
-  #wrap table tr:nth-child(even) {
-    background: #eff1f3; }
-  #wrap #form-wrapper {
-    width: 100%;
-    float: left;
-    padding: 10px 0; }
-    #wrap #form-wrapper form#location-form {
-      display: none; }
-      #wrap #form-wrapper form#location-form input[type="text"] {
-        margin: 5px 0 10px 0;
-        padding: 4px;
-        height: 20px;
-        font-size: 1em;
-        border: 1px solid #ccc; }
-    #wrap #form-wrapper #use-current-location {
-      display: none; }
-  #wrap #georesults {
-    background-color: #fff;
-    width: 100%;
-    padding: 10px 0; }
-    #wrap #georesults #resultinfo {
+    #wrap .page-content h3 {
+      margin-bottom: 10px; }
+    #wrap .page-content p {
+      margin-bottom: 10px; }
+    #wrap .page-content table {
+      width: 100%; }
+    #wrap .page-content table tr:nth-child(even) {
+      background: #eff1f3; }
+    #wrap .page-content #form-wrapper {
       width: 100%;
-      margin: 10px auto 0 auto; }
-    #wrap #georesults #map_canvas {
+      float: left;
+      padding: 10px 0; }
+      #wrap .page-content #form-wrapper form#location-form {
+        display: none; }
+        #wrap .page-content #form-wrapper form#location-form input[type="text"] {
+          margin: 5px 0 10px 0;
+          padding: 4px;
+          height: 20px;
+          font-size: 1em;
+          border: 1px solid #ccc; }
+      #wrap .page-content #form-wrapper #use-current-location {
+        display: none; }
+    #wrap .page-content #georesults {
+      background-color: #fff;
       width: 100%;
-      height: 280px;
-      margin: 0 auto; }
-  #wrap #boundaries .selected {
-    background: #6AAFBD; }
-  #wrap #boundaries td {
-    border: 0;
-    width: 50%;
-    padding: 10px 0;
-    margin: 0; }
+      padding: 10px 0; }
+      #wrap .page-content #georesults #resultinfo {
+        width: 100%;
+        margin: 10px auto 0 auto; }
+      #wrap .page-content #georesults #map_canvas {
+        width: 100%;
+        height: 280px;
+        margin: 0 auto; }
+    #wrap .page-content #boundaries .selected {
+      background: #6AAFBD; }
+    #wrap .page-content #boundaries td {
+      border: 0;
+      width: 50%;
+      padding: 10px 0;
+      margin: 0; }
 
 /* Utility */
 .clearfix:after {

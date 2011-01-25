@@ -1,10 +1,85 @@
-<h3>Accessing the API</h3>
+<h3>Introduction</h3>
 
+<p>The Boundary Service API provides a restful interface to a wealth of data about official geographic boundaries within Illinois.  Data is retrieved from the API as JSON (optionally JSONP) with nested GeoJSON for describing the boundary shapes.</p>
 
-<h3>Retreiving information about Boundary Sets</h3>
+<p>There are two resources described by the API: Boundary Sets and Boundaries.</p>
 
+<h3>Boundary Sets</h3>
 
-<h3>Retrieving individual boundaries</h3>
+<p>To see a paginated list of available Boundary Sets access the following url:</p>
 
+<p><code>http://{{ API_DOMAIN }}/1.0/boundary-set/</code></p>
 
-<h3>Available geographic queries</h3>
+<p>Boundary Sets describe the extent and provenance of the data as well how recently it has been updated.  A complete list of attributes for a Boundary Set can be introspected by accessing:</p>
+
+<p><code>http://{{ API_DOMAIN }}/1.0/boundary-set/schema/</code></p>
+
+<p>A single BoundarySet may be accessed directly by its slug:</p>
+
+<p><code>http://{{ API_DOMAIN }}/1.0/boundary-set/community-areas/</code></p>
+
+<h3>Boundaries</h3>
+
+<p>Resources representing individual Boundaries can be accessed at:</p>
+
+<p><code>http://{{ API_DOMAIN }}/1.0/boundary/</code></p>
+
+<p>As with Boundary Sets a description of all attributes returned with the Boundary can be retrieved from:</p>
+
+<p><code>http://{{ API_DOMAIN }}/1.0/boundary/schema/</code></p>
+
+<p>A single Boundary may be accessed directly by its slug:</p>
+
+<p><code>http://{{ API_DOMAIN }}/1.0/boundary/austin-community-area/</code></p>
+
+<p>For purposes of easy access the Boundary Service exposes a second non-canonical path to any Boundary by appending the Boundary's "external_id" property to the BoundarySet's uri. Example:</p>
+
+<p><code>http://{{ API_DOMAIN }}/1.0/boundary-set/wards/22</code></p>
+
+<p>This returns the 22nd Chicago city ward.</p>
+
+<h3>Limiting resources returned</h3>
+
+<p>Pagination of returned resources is handled with the page and limit parameters.</p>
+
+<p>In addition, Boundaries may (and should) be constrained by passing a comma-delimited list of BoundarySet slugs to the sets parameter:</p>
+
+<p><code>http://{{ API_DOMAIN }}/1.0/boundary/?sets=community-areas,neighborhoods</code></p>
+
+<h3>Point queries</h3>
+
+<p>The fundamental query exposed by the Boundary Service is a point-in-polygon search by latitude and longitude.  Here is an example:</p>
+
+<code>http://{{ API_DOMAIN }}/1.0/boundary/?contains=41.8903239,-87.623458&sets=community-areas</code></p>
+
+<p>This will return the community area that Tribune Tower resides in, the Near North Side.</p>
+
+<p>Notice that in this case we also pass the set parameter to constrain the query. For practical purposes its important to limit your queries to only the data you need as it is much more performant than querying and returning all the data.</p>
+
+<h3>Near queries</h3>
+
+<p>The near query will find all Boundaries that intersect a circle of a specified radius using a given point as its center:</p>
+
+<p><code>http://{{ API_DOMAIN }}/1.0/boundary/?near==41.8903239,-87.623458,1mi&sets=wards</code></p>
+
+<p>This returns all wards within one mile of Tribune Tower. The radius parameter may be specified in any units supported by <a href="http://docs.djangoproject.com/en/dev/ref/contrib/gis/measure/">GeoDjango's Measurement objects</a></p>
+
+<p>Please note this query will execute much more slowly than the point query.</p>
+
+<h3>Intersection queries</h3>
+
+<p>The intersects query find all boundaries in the Boundary Service which intersect another.  To find all neighborhoods which intersect the Humbolt Park Community Area, one would retrieve:</p>
+
+<p><code>http://{{ API_DOMAIN }}/1.0/boundary/?intersects=humboldt-park-community-area&sets=neighborhoods</code></p>
+
+<p>The Boundary Service does not currently support querying by arbitrary shapes.</p>
+
+<h3>JSONP</h3>
+
+<p>For use in client-side applications the Boundary Service API may be accessed via JSONP. Simply append the format and callback parameters to the query string:</p>
+
+<p><code>http://{{ DOMAIN_API }}/1.0/boundary/?format=jsonp&callback=func</code></p>
+
+<h3>Throttling & API keys</h3>
+
+<p>The Boundary Service API can be accessed anonymously up to 100 times per hour per IP address. This throttling is in place in order to ensure that it can be scaled to meet demand without extensive outages. If you intend to build an application which will query the API extensively, please e-mail us at <a href="mailto:newsapps@tribune.com">newsapps@tribune.com</a> and we will hook you up with an API key. We place no limitations on the usage of the service beyond this, however, this implementation will allow us to take appropriate action in the event that a single source of the traffic is leading the service to be unstable.</p>
