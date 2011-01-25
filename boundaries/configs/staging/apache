@@ -1,6 +1,5 @@
 <VirtualHost *:80>
     ServerName boundaries.beta.tribapps.com
-    ServerAlias www.boundaries.beta.tribapps.com
 
     WSGIScriptAlias / /home/newsapps/sites/boundaries/repository/boundaries/configs/staging/staging.wsgi
     

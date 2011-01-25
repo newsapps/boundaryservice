@@ -1,13 +1,6 @@
 <VirtualHost *:80>
     ServerName boundaries.tribapps.com
     
-    SetEnvIf X-Forwarded-For "^163\.192\..*\..*" trib
-    <Location /> # until launch
-          Order Deny,Allow
-          Allow from all
-          # Allow from env=trib
-    </Location>
-    
     Redirect permanent /favicon.ico http://media.apps.chicagotribune.com/boundaries/na_media/favicon.ico
     
     Alias /robots.txt /home/newsapps/sites/boundaries/repository/boundaries/assets/robots.txt

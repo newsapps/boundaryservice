@@ -1,6 +1,5 @@
 <VirtualHost *:80>
     ServerName api.boundaries.beta.tribapps.com
-    ServerAlias www.api.boundaries.beta.tribapps.com
     
     Redirect permanent /favicon.ico http://media-beta.tribapps.com/boundaries/na_media/favicon.ico
     

@@ -1,6 +1,5 @@
 <VirtualHost *:80>
     ServerName api.boundaries.tribapps.com
-    ServerAlias www.api.boundaries.tribapps.com
     
     Redirect permanent /favicon.ico http://media.apps.chicagotribune.com/boundaries/na_media/favicon.ico
     
