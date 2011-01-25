@@ -183,8 +183,9 @@ img::-moz-selection {background: transparent;}
     .page-content {
         display: none;
         
-        h3 { margin-bottom: 10px; }
-        p { margin-bottom: 10px; }
+        h3 { margin-top: 20px; }
+        p { margin-top: 10px; }
+        code { background: #EEEEEE; padding: 3px; }
     
         table { 
             width: 100%;

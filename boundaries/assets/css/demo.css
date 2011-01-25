@@ -146,9 +146,15 @@ img::-moz-selection {
   #wrap .page-content {
     display: none; }
     #wrap .page-content h3 {
-      margin-bottom: 10px; }
+      margin-top: 20px; }
     #wrap .page-content p {
-      margin-bottom: 10px; }
+      margin-top: 10px; }
+    #wrap .page-content code {
+      background: #EEEEEE;
+      padding: 3px; }
+    #wrap .page-content code.inline {
+      background: #FFF;
+      padding: 0px; }
     #wrap .page-content table {
       width: 100%; }
     #wrap .page-content table tr:nth-child(even) {
