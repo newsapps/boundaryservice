@@ -213,7 +213,10 @@ function switch_page(page_id) {
 
     if (window.location.hash == "#demo") {
         resize_end_trigger(); 
-        geolocate();
+
+        if (!map) {
+            geolocate();
+        }
     }
 }
 
