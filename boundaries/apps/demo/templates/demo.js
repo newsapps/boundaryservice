@@ -210,12 +210,19 @@ function switch_page(page_id) {
     $(".page-content").hide()
     $("#" + page_id + "-page").show()
     window.location.hash = page_id
+
+    if (window.location.hash == "#demo") {
+        resize_end_trigger(); 
+        geolocate();
+    }
 }
 
 /* DOM EVENT HANDLERS */
 function resize_listener(center) {
     $(this).bind('resize_end', function(){ 
-        map.panTo(center); 
+        if (map) {
+            map.panTo(center);
+        }
     });
 }
 
@@ -257,15 +264,11 @@ $(document).ready(function() {
     $('#use-current-location').click(use_current_location);
     $('#location-form input[type=text]').focus(search_focused);
     $('#location-form').submit(address_search)
-    
-    resize_end_trigger();
-    
+
     if (window.location.hash != "") {
         switch_page(window.location.hash.substring(1));
     } else {
         switch_page("demo");
     }
-    
-    geolocate();
 });
 
