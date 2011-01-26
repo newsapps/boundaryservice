@@ -1,0 +1,213 @@
+{% load newsappstags %}
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN">
+<html>
+    <head>
+        {% analytics_header %}
+        <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+        <meta name="description" content="{% block head_description %}{% endblock head_description %}">
+        <meta name="keywords" content="{% block head_keywords %}{% endblock %}">
+        <title>
+            {% block title %}{% endblock %} -- chicagotribune.com
+        </title>
+        <meta name="y_key" content="43959a87935ee9bb">
+        <meta name="msvalidate.01" content="AAC9C18F70AC386BC4DCF4DDF9BF1786">
+        <link href="{% build_media_url '/na_media/hive/stylesheets/reset.css' %}" media="all" rel="stylesheet" type="text/css">
+        <link href="{% build_media_url '/na_media/hive/stylesheets/common.css' %}" media="all" rel="stylesheet" type="text/css">
+        <link href="{% build_media_url '/na_media/stylesheets/market.css' %}" media="all" rel="stylesheet" type="text/css">
+        <link rel="stylesheet" href="{% build_media_url '/na_media/newsapps.css' %}" type="text/css">
+        <script src="{% build_media_url '/na_media/jquery-1.3.2.min.js' %}" type="text/javascript" charset="utf-8"></script>
+        <script type="text/javascript" charset="utf-8">
+            if ( $ == jQuery ) jQuery.noConflict();
+        </script>
+        <!--[if lt IE 7]>
+        <style type="text/css">
+          img { behavior: url('/na_media/iepngfix.htc') }
+        </style>
+        <![endif]-->
+        <link rel="icon" type="image/vnd.microsoft.icon" href="{% build_media_url '/na_media/favicon.ico' %}">
+        <link rel="icon" type="image/png" href="{% build_media_url '/na_media/favicon.png' %}">
+        <link rel="SHORTCUT ICON" href="{% build_media_url '/na_media/favicon.ico' %}">
+        {% block extra_head %} {% endblock %}
+    </head>
+    <body>
+        <div id="container">
+            <!-- BEGIN HEADER -->
+            <div id="branding" class="thirdParty">
+                <div id="classified-bar" class="clearfix">
+                   <div id=classBarNav>
+                      <ul class="classBarNavLink">
+                         <li class="noBorder">
+                            <a rel="external" href="https://services.chicagotribune.com/Circulation/regularDeliveryAvailability.htm">
+                                HOME DELIVERY</a>
+                         </li>
+                         <li >
+                            <a rel="external" href="http://www.chicagotribune.com/services/"  >
+                                PERKS</a>
+                         </li>
+                         <li >
+                            <a rel="external" href="https://advertise.chicagotribune.com"  >
+                                ADVERTISE</a>
+                         </li>
+                         <li >
+                            <a rel="external" href="http://www.chicagotribune.com/classified/jobs/"  >
+                                JOBS</a>
+                         </li>
+                         <li >
+                            <a rel="external" href="http://www.chicagotribune.com/classified/automotive/"  >
+                                CARS</a>
+                         </li>
+                         <li >
+                            <a rel="external" href="http://www.chicagotribune.com/classified/realestate/"  >
+                                HOMES</a>
+                         </li>
+                         <li>
+                            <a rel="external" href="http://www.chicagotribune.com/classified/realestate/apartments/"  >
+                                APARTMENTS</a></li>
+                         <li><a rel="external" href="http://www.chicagotribune.com/shopping/"  >
+                                DEALS</a></li>
+                         <li><a rel="external" href="http://www.chicagotribune.com/classified/">
+                                MORE CLASSIFIED</a></li>
+                        </ul>
+                    </div>
+                </div>
+                <div id="headerthirdparty" class="clearfix">
+                    <div id="logothirdparty">
+                        <a rel="external" href="http://chicagotribune.com"><img src="http://chicagotribune.com/images/thirdpartylogo.gif" alt="chicagotribune.com"></a>
+                    </div>
+                    <div id="headerAd">
+                        <!-- BEGIN LEADER 728 X 90 AD SECTION -->
+                        <script language="JavaScript" type="text/javascript">
+ord=Math.random()*10000000000000000;
+                        document.write('<iframe id="dclk' + ord+'" src="" width="728" height="90" marginwidth="0" marginheight="0" hspace="0" vspace="0" frameborder="0" scrolling=no borderCOLOR="#000000">'); if (navigator.userAgent.indexOf("Gecko")==-1) { document.write('<script language="JavaScript" src="http://ad.doubleclick.net/adj/trb.chicagotribune/news/local/burroak;!category=net;pos=t;tile=1;dcopt=ist;ptype=sf;sz=728x90;abr=!ie;ord=' + ord + '?" type="text/javascript"><\/script>');
+                        }
+                        document.write('<\/iframe>');
+                        if (document.getElementById('dclk'+ord+'' )) { document.getElementById('dclk'+ord+'').src = 'http://ad.doubleclick.net/adi/trb.chicagotribune/news/local/burroak;!category=net;pos=t;tile=1;dcopt=ist;ptype=sf;sz=728x90;ord=' + ord + '?'; } 
+                        </script><noscript><a rel="external" href="http://ad.doubleclick.net/jump/trb.chicagotribune/news/local/burroak;dcopt=ist;sz=728x90;ord='+%20ord%20+%20'?';target="><img src="http://ad.doubleclick.net/ad/trb.chicagotribune/news/local/burroak;dcopt=ist;sz=728x90;ord='ord%20+%20?';%20width=" height="90" border="0" alt=""></a></noscript> <!-- End ad tag -->
+                    </div>
+                </div>
+                <div id="toolbarthirdparty" class="clearfix">
+                    <div id="breadcrumbthirdparty">
+                        <a rel="external" href="http://chicagotribune.com">Home</a> &nbsp;&gt;&nbsp; <a rel="external" href="http://www.chicagotribune.com/news/data">Data</a> &nbsp;&gt;&nbsp; {% block breadcrumbs %} {% endblock breadcrumbs %}
+                    </div>
+                    <div class="clear"></div>
+                    <div id="searchthirdparty">
+                        <form method="get" action="http://chicagotribune.com/search/dispatcher.front" id="searchBox" onsubmit="javascript:return checkForm(this,'Query')" name="searchBox">
+                            <input id="searchText" type="text" name="Query" value="Search" onfocus="this.value=''"><input id="target" name="target" value="article" type="hidden"><input id="searchButton" type="submit" value="Go!">
+                        </form><script language="javascript" type="text/javascript">
+function checkForm (searchForm)
+                        {
+                        var valid;
+                        if (searchForm.Query.value == "") {
+                            alert("Please Enter a Search Term");
+                            searchForm.Query.focus()
+                            valid = false;
+                        } else {
+                            valid = true;
+                            if (searchForm.bool.value == "all") {
+                                searchForm.Query.value = "\"" + searchForm.Query.value + "\"";
+                            }
+                        }
+                        return valid;
+                        }
+                        </script>
+                    </div>
+                </div>
+            </div><!-- END HEADER -->
+            <div id="section" class="thirdPartyContent">
+                <div class="thirdPartyContentPadder">
+                    <!-- YOUR CONTENT GOES HERE -->
+                    <div id="content" class="article">
+                        {% block content %} CONTENT GOES HERE. {% endblock content %}
+                    </div>
+                </div>
+            </div>        <!-- BEGIN FOOTER -->
+<div id="footer">
+	<div id="footerContainer">
+		<div id="footerlogo">
+			<img src="http://media.apps.chicagotribune.com/assets/ct-footer-logo-white_280x43.png" alt="footer graph" />
+		</div>
+		<div id="footertext">
+			<ul>
+				<li class="nav">
+					<ul class="links">
+						<li id="footer-item-1">
+							<a href="http://www.chicagotribune.com#">PARTNERS:</a>
+						</li>
+						<li id="footer-item-2">
+							<a href="http://www.chicagomag.com/">Chicago Magazine</a>
+						</li>
+						<li id="footer-item-3">
+							<a href="http://www.chicagonow.com/">ChicagoNow</a>
+						</li>
+						<li id="footer-item-4">
+							<a href="http://www.cltv.com/">CLTV</a>
+						</li>
+						<li id="footer-item-5">
+							<a href="http://chicago.metromix.com/">Metromix</a>
+						</li>
+						<li id="footer-item-6">
+							<a href="http://redeye.chicagotribune.com/">RedEye</a>
+						</li>
+						<li id="footer-item-7">
+							<a href="http://www.triblocal.com/">Triblocal</a>
+						</li>
+						<li id="footer-item-8">
+							<a href="http://www.wgnam.com/">WGN-AM</a>
+						</li>
+						<li id="footer-item-9">
+							<a href="http://www.wgntv.com/">WGN-TV</a>
+						</li>
+						<li id="footer-item-10">
+							<a href="http://www.vivelohoy.com/">Vivelo Hoy</a>
+						</li>
+						<li id="footer-item-11">
+							<a href="http://www.baltimoresun.com/">Baltimore Sun</a>
+						</li>
+						<li id="footer-item-12">
+							<a href="http://www.dailypress.com/">Daily Press</a>
+						</li>
+						<li id="footer-item-13">
+							<a href="http://www.courant.com/">Hartford Courant</a>
+						</li>
+						<li id="footer-item-14">
+							<a href="http://www.latimes.com/">Los Angeles Times</a>
+						</li>
+						<li id="footer-item-15">
+							<a href="http://www.orlandosentinel.com/">Orlando Sentinel</a>
+						</li>
+						<li id="footer-item-16">
+							<a href="http://www.sun-sentinel.com/">Sun Sentinel</a>
+						</li>
+						<li id="footer-item-17">
+							<a href="http://www.mcall.com/">The Morning Call</a>
+						</li>
+					</ul>
+					<ul class="links">
+						<li id="footer-item-18">
+							<a href="http://www.chicagotribune.com#">Chicago Tribune, 435 N. Michigan Avenue, Chicago, IL 60611</a>
+						</li>
+						<li id="footer-item-19">
+							<a href="http://www.chicagotribune.com/tos/" rel="nofollow">Terms of service</a>
+						</li>
+						<li id="footer-item-20">
+							<a href="http://www.chicagotribune.com/privacy/" rel="nofollow">Privacy</a>
+						</li>
+						<li id="footer-item-21">
+							<a href="http://www.chicagotribune.com/about/">Feedback</a>
+						</li>
+					</ul>
+				</li>
+				<li></li>
+			</ul>
+		</div>
+	</div>
+</div>
+<div class="clear"></div>
+                    <!-- END FOOTER -->
+            
+        </div>
+        {% block analytics_footer %}{% analytics_footer '' %}{% endblock %} 
+        {% block extra_body %} {% endblock extra_body %}
+        <!--x-Instance-Name: i9s27n2-->
+    </body>
+</html>
