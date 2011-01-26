@@ -20,7 +20,8 @@ function init_map(lat, lng) {
         var map_options = {
             zoom: 14,
             center: ll,
-            mapTypeId: google.maps.MapTypeId.ROADMAP
+            mapTypeId: google.maps.MapTypeId.ROADMAP,
+            scrollwheel: false
         };
 
         map = new google.maps.Map(document.getElementById("map_canvas"), map_options);
@@ -63,7 +64,7 @@ function geocode(query) {
 }
 
 function handle_geocode(results, status) {
-    if (results.length > 1) { alt_addresses(results); }
+    alt_addresses(results);
 
     lat = results[0].geometry.location.lat();
     lng = results[0].geometry.location.lng();
