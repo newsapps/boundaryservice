@@ -63,6 +63,8 @@ function geocode(query) {
 }
 
 function handle_geocode(results, status) {
+    if (results.length > 1) { alt_addresses(results); }
+
     lat = results[0].geometry.location.lat();
     lng = results[0].geometry.location.lng();
 
@@ -106,6 +108,41 @@ function process_location(lat, lng) {
     init_map(lat, lng);
     show_user_marker(lat, lng);
     get_boundaries(lat, lng);
+}
+
+function goto_alt(query) {
+    geocode(query);
+}
+
+function alt_addresses(results) {
+    $('#alt-addresses').html('');
+
+    keep = new Array();
+
+    $(results).each(function(i,val) {
+
+        if (i==0) return; // skip the first result, it's already in the search box
+
+        for (var t in val.types) {
+            if (val.types[t] == 'street_address' || val.types[t] == 'intersection') {
+                keep.push(val.formatted_address);
+                break;
+            }
+        }
+
+    });
+
+    if (keep.length <= 1) {
+
+        break;
+
+    } else {
+
+        for (var i in keep) {
+            $('#alt-addresses').append('<a href="javascript:goto_alt(\'' + keep[i] + '\');">' + keep[i] + '</a><br />');
+        }
+
+    }
 }
 
 // Use boundary service to lookup what areas the location falls within
@@ -197,6 +234,7 @@ function display_boundary(slug, no_fit) {
 function show_search() {
     $('#not-where-i-am').hide();
     if (geolocate_supported) { $('#use-current-location').fadeIn(); }
+    $('#did-you-mean').fadeIn();
     $('#location-form').slideDown();
 }
 
@@ -249,6 +287,25 @@ function use_current_location() {
     geolocate();
 }
 
+function toggle_alt_addresses() {
+    alt_adds_div = $('#alt-addresses');
+    if (alt_adds_div.is(':hidden')) {
+        show_alt_addresses();
+    } else if (alt_adds_div.is(':visible')) {
+        hide_alt_addresses();
+    }
+}
+
+function show_alt_addresses() {
+    $('#alt-addresses').slideDown();
+    $('#did-you-mean').addClass('highlight');
+}
+
+function hide_alt_addresses() {
+    $('#alt-addresses').hide();
+    $('#did-you-mean.highlight').removeClass('highlight');
+}
+
 function search_focused() {
     if(this.value == '{{ default_search_text }}') {
         $(this).val("");
@@ -263,8 +320,10 @@ function address_search() {
 
 $(document).ready(function() {
     // Setup handlers
+    $('body').click(hide_alt_addresses);
     $('#not-where-i-am').click(not_where_i_am);
     $('#use-current-location').click(use_current_location);
+    $('#did-you-mean').click(function(e) { e.stopPropagation(); toggle_alt_addresses(); });
     $('#location-form input[type=text]').focus(search_focused);
     $('#location-form').submit(address_search)
 
