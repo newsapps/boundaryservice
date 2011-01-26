@@ -173,7 +173,7 @@ img::-moz-selection {
         margin: 0 10px 0 0;
         padding: 5px;
         margin-left: -5px; }
-      #wrap .page-content #form-wrapper #use-current-location, #wrap .page-content #form-wrapper #did-you-mean {
+      #wrap .page-content #form-wrapper #use-current-location {
         display: none; }
       #wrap .page-content #form-wrapper #did-you-mean.highlight {
         background: #343434;

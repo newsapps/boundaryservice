@@ -20,7 +20,7 @@ function init_map(lat, lng) {
         var map_options = {
             zoom: 14,
             center: ll,
-            mapTypeId: google.maps.MapTypeId.ROADMAP,
+            mapTypeId: google.maps.MapTypeId.TERRAIN,
             scrollwheel: false
         };
 
