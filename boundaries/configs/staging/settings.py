@@ -15,6 +15,9 @@ DATABASE_PASSWORD = 'TODO'
 MEDIA_URL = 'http://TODO/boundaries/'
 ADMIN_MEDIA_PREFIX = 'http://TODO/boundaries/admin_media/'
 
+# Make this unique, and don't share it with anybody.
+SECRET_KEY = 'TODO'
+
 # Predefined domain
 MY_SITE_DOMAIN = 'TODO'
 
