@@ -229,7 +229,7 @@ img::-moz-selection {background: transparent;}
             top: 80px;
             left: -5px;
             z-index: 1;
-            padding: 0 10px 10px 5px ;
+            padding: 10px 10px 10px 5px ;
             border: 1px solid #ccc;
             display: none;
             /* For IE 5.5 - 7 */
@@ -243,6 +243,11 @@ img::-moz-selection {background: transparent;}
             -webkit-box-shadow: 2px 2px 10px #444;
             /* Standard */
             box-shadow: 2px 2px 10px #444;
+        }
+        .disabled-link {
+            text-decoration: none;
+            color: #ccc;
+            cursor: default;
         }
     }
 

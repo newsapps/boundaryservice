@@ -110,18 +110,13 @@ function process_location(lat, lng) {
     get_boundaries(lat, lng);
 }
 
-function goto_alt(query) {
-    geocode(query);
-}
-
 function alt_addresses(results) {
     $('#alt-addresses').html('');
 
     keep = new Array();
 
-    $(results).each(function(i,val) {
-
-        if (i==0) return; // skip the first result, it's already in the search box
+    $.each(results, function(i,val) {
+        if (i==0) return; // skip the first result
 
         for (var t in val.types) {
             if (val.types[t] == 'street_address' || val.types[t] == 'intersection') {
@@ -129,19 +124,23 @@ function alt_addresses(results) {
                 break;
             }
         }
-
     });
 
     if (keep.length <= 1) {
-
-        break;
-
+        $('#did-you-mean')
+            .addClass('disabled-link')
+            .unbind();
     } else {
+        $('#did-you-mean')
+            .removeClass('disabled-link')
+            .click(function(e) { 
+                    e.stopPropagation(); 
+                    toggle_alt_addresses(); 
+                    });
 
         for (var i in keep) {
-            $('#alt-addresses').append('<a href="javascript:goto_alt(\'' + keep[i] + '\');">' + keep[i] + '</a><br />');
+            $('#alt-addresses').append('<a href="javascript:geocode(\'' + keep[i] + '\');">' + keep[i] + '</a><br />');
         }
-
     }
 }
 
@@ -297,7 +296,7 @@ function toggle_alt_addresses() {
 }
 
 function show_alt_addresses() {
-    $('#alt-addresses').slideDown();
+    $('#alt-addresses').slideDown(250);
     $('#did-you-mean').addClass('highlight');
 }
 
