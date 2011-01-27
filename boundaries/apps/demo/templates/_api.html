@@ -6,19 +6,110 @@
 
 <h3>Boundary Sets</h3>
 
+<p>Boundary Sets describe the extent and provenance of a group of Boundaris as well how recently they were last updated. Here, for example, is the Boundary Set for census tracts:</p>
+
+<p><pre>
+{
+    authority: "U.S. Census Bureau",
+    boundaries: [
+        "/1.0/boundary/census-tract-1-7/",
+        "/1.0/boundary/census-tract-1-9/",
+        "/1.0/boundary/census-tract-1/",
+        "/1.0/boundary/census-tract-1-8/",
+        ...
+    ],
+    count: 3123,
+    domain: "Illinois",
+    href: "http://www.census.gov/cgi-bin/geo/shapefiles2010/main",
+    last_updated: "2011-01-08",
+    metadata_fields: [
+        "STATEFP10",
+        "COUNTYFP10",
+        "TRACTCE10",
+        "GEOID10",
+        "NAME10",
+        "NAMELSAD10",
+        "MTFCC10",
+        "FUNCSTAT10",
+        "ALAND10",
+        "AWATER10",
+        "INTPTLAT10",
+        "INTPTLON10"
+    ],
+    name: "Census Tracts",
+    notes: "Shapes used for 2010 census.",
+    resource_uri: "/1.0/boundary-set/census-tracts/",
+    slug: "census-tracts"
+}
+</pre></p>
+
+<p>Descriptions of all the properties of a Boundary Set can be accessed at:</p>
+
+<p><code>http://{{ settings.API_DOMAIN }}/1.0/boundary-set/schema/</code></p>
+
 <p>To see a paginated list of available Boundary Sets access the following url:</p>
 
 <p><code>http://{{ settings.API_DOMAIN }}/1.0/boundary-set/</code></p>
-
-<p>Boundary Sets describe the extent and provenance of a group of Boundaris as well how recently they were last updated.  A complete list of properties for a Boundary Set can be introspected by accessing:</p>
-
-<p><code>http://{{ settings.API_DOMAIN }}/1.0/boundary-set/schema/</code></p>
 
 <p>A single BoundarySet may be accessed directly by its slug:</p>
 
 <p><code>http://{{ settings.API_DOMAIN }}/1.0/boundary-set/community-areas/</code></p>
 
 <h3>Boundaries</h3>
+
+<p>Boundaries are the individual shapes within a Boundary Set. The Boundary for A-C Central Community Unit School District 262 looks like:</p>
+
+<p><pre>
+{
+    centroid: {
+        coordinates: [
+            -90.084528
+            39.952622
+        ],
+        type: "Point"
+    }
+    external_id: "00105",
+    kind: "Unified School District",
+    metadata: {
+        ALAND: 377198165,
+        AWATER: 1185357,
+        FUNCSTAT: "E",
+        HIGRADE: "12",
+        INTPTLAT: "+39.8619840",
+        INTPTLON: "-090.0553779",
+        LOGRADE: "PK",
+        LSAD: "00",
+        MTFCC: "G5420",
+        NAME: "A-C Central Community Unit School District 262",
+        SDTYP: "",
+        STATEFP: "17",
+        STATENS: "01779784",
+        UNSDIDFP: "1700105",
+        UNSDLEA: "00105"
+    },
+    name: "A-C Central Community Unit School District 262",
+    resource_uri: "/1.0/boundary/a-c-central-community-unit-school-district-262-unified-school-district/",
+    set: "/1.0/boundary-set/unified-school-districts/",
+    simple_shape: {
+    coordinates: [
+        [
+            [
+                [
+                    -89.9756,
+                    39.886457
+                ],
+                [
+                    -89.975954,
+                    39.836324
+                ]
+                ...
+            ]
+        ],
+        type: "MultiPolygon"
+    },
+    slug: "a-c-central-community-unit-school-district-262-unified-school-district"
+}
+</pre></p>
 
 <p>Resources representing individual Boundaries can be accessed at:</p>
 

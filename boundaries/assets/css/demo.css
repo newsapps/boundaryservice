@@ -152,6 +152,9 @@ img::-moz-selection {
     #wrap .page-content code {
       background: #EEEEEE;
       padding: 3px; }
+    #wrap .page-content pre {
+      background: #EEEEEE;
+      padding: 3px; }
     #wrap .page-content table {
       width: 100%; }
     #wrap .page-content table tr:nth-child(even) {
