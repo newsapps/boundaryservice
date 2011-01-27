@@ -120,10 +120,10 @@ function alt_addresses(results) {
         if (i==0) return; // skip the first result
 
         for (var t in val.types) {
-            //if (val.types[t] == 'street_address' || val.types[t] == 'intersection') {
+            if (val.types[t] == 'street_address' || val.types[t] == 'intersection') {
                 keep.push(val.formatted_address);
-            //    break;
-            //}
+                break;
+            }
         }
     });
 
