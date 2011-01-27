@@ -42,7 +42,9 @@
 
 <h3>Limiting resources returned</h3>
 
-<p>Pagination of returned resources is handled with the <code>page</code> and <code>limit</code> parameters.</p>
+<p>Pagination of returned resources is handled with the <code>limit</code> and <code>offset</code> parameters:</p>
+
+<p><code>http://{{ settings.API_DOMAIN }}/1.0/boundary/?limit=10&offset=10</code></p>
 
 <p>In addition, queries may (and should) be constrained by passing a comma-delimited list of BoundarySet slugs to the <code>sets</code> parameter:</p>
 
