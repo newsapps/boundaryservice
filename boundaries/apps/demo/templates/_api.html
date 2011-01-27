@@ -86,8 +86,8 @@
 
 <h3>Throttling & API keys</h3>
 
-<p>The Boundary Service API can be accessed anonymously up to <strong>100</strong> times per hour per IP address. This throttling is in place in order to ensure that it can be scaled to meet demand without extensive outages. If you intend to build an application which will query the API in bulk, please <a href="mailto:newsapps@tribune.com">e-mail us</a> your requested username and we will hook you up with an API key that allows unlimited access. This implementation will allow us to take appropriate action in the event that a single source of the traffic is causing the service to be unstable.</p>
+<p>The Boundary Service API can be accessed anonymously up to <strong>100</strong> times per hour per IP address. This throttling is in place in order to ensure that it can be scaled to meet demand without extensive outages. If you intend to build an application which will query the API in bulk, please <a href="mailto:newsapps@tribune.com">e-mail us</a> your requested username and we will provide you with an API key that allows unlimited access. This implementation will allow us to take appropriate action in the event that a single source of the traffic is causing the service to be unstable.</p>
 
-<p>An API key is used as follows:</p>
+<p>An API key can be used as follows:</p>
 
-<p><code>http://{{ settings.API_DOMAIN }}/1.0/boundary/?username=example&api_key=3b7b288ca1f9d90bef69c3eb4d880184f84ff740</code></p>
+<p><code>http://{{ settings.API_DOMAIN }}/1.0/boundary/?username=example_user&api_key=3b7b288ca1f9d90bef69c3eb4d880184f84ff740</code></p>
