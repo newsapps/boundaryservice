@@ -28,11 +28,11 @@
 
 <p><code>http://{{ settings.API_DOMAIN }}/1.0/boundary/schema/</code></p>
 
-<p>A single Boundary may be accessed directly by its slug:</p>
+<p>And a single Boundary may be accessed directly by its slug:</p>
 
 <p><code>http://{{ settings.API_DOMAIN }}/1.0/boundary/austin-community-area/</code></p>
 
-<p>For ease of url construction a Boundary may also be referenced by appending the Boundary's <code>external_id</code> property to the BoundarySet's uri. Example:</p>
+<p>For ease of url construction a Boundary may also be referenced by appending the Boundary's <code>external_id</code> property to it's parent BoundarySet's uri. Example:</p>
 
 <p><code>http://{{ settings.API_DOMAIN }}/1.0/boundary-set/wards/22</code></p>
 
