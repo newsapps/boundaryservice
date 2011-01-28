@@ -1,8 +1,8 @@
 h1. The Newsapps Boundary Service
 
-The Boundary Service is a ready-to-deploy system for aggregating regional boundary data (e.g. from city or state shapefiles) and republishing that data via a RESTful JSON API.  It includes an extensive example project which demonstrates the functionality of the API using client-side code.
+The Boundary Service is a ready-to-deploy system for aggregating regional boundary data (from shapefiles) and republishing that data via a RESTful JSON API.  It includes an extensive demo site which demonstrates the functionality of the API using client-side javascript.
 
-This project is aimed at providing a simple service for newsrooms, open-government hackers and others to centralize and build on regional GIS data.  You can see the instance we've configured for Chicago & Illinois, along with much more detailed information about the API at <a href="http://boundaries.tribapps.com">http://boundaries.tribapps.com</a>.
+This project is aimed at providing a simple service for newsrooms, open-government hackers and others to centralize and build on regional GIS data.  You can see the instance we've configured for Chicago & Illinois, along with much more detailed information about the API at <a href="http://boundaries.tribapps.com/">http://boundaries.tribapps.com/</a>.
 
 h2. Local setup
 
@@ -14,7 +14,7 @@ mkvirtualenv boundaryservice
 pip install -r requirements.txt
 </pre>
 
-You can then fast-track through database setup by running:
+You'll need to have postgres running locally, then you can then fast-track through database setup by running:
 
 <pre>fab local_bootstrap</pre>
 
@@ -22,17 +22,24 @@ Finally, you will need to load some data. The project comes with one example dat
 
 <pre>./manage load_shapefiles</pre>
 
-In the future, you can load only specific shapefiles by passing the <pre>-o</pre> flag with a comma-delimted list of Boundary Sets (whitespace in the the Boundary Set names is collapsed).  You can also reload boundary sets (clearing existing data) by passing the <pre>-c</pre> flag. Combine the two flags to clear and reload only specific datasets.
+In the future, you can load only specific shapefiles by passing the -o flag with a comma-delimited list of Boundary Sets (whitespace in the the Boundary Set's names is collapsed).  You can also reload boundary sets (clearing existing data) by passing the -c flag. Combine the two flags to clear and reload only specific datasets.
+
+To run the service locally you will need to run two commands in separate terminals, one to run the api and another to run the demo application.
+
+<pre>./runapi</pre>
+<pre>./manage runserver</pre>
+
+Once those commands are running you should be able to visit <a href="http://localhost:8000/">http://localhost:8000/</a> to see the demo site, which will be making AJAX requests to <a href="http://localhost:8001/1.0/">http://localhost:8001/1.0/</a> for boundary data. To see the API in action try a url such as <a href="http://localhost:8001/1.0/boundary-set/">http://localhost:8001/1.0/boundary-set/</a>.
 
 h2. Remote setup (deployment)
 
-The Boundary Service is based on the most recent iteration of our <a href="http://blog.apps.chicagotribune.com/2010/03/08/advanced-django-project-layout/">newsapps Django project layout</a>, (which is now part of Gareth Rushgrove's <a href="https://github.com/garethr/django-project-templates/">django-project-tempalates</a>). Using this base for a project provides extensive infrastructure for doing robust deployments including isolated configuration, stable branch handling, and an extensive fabric deployment script.
+The Boundary Service is based on the most recent iteration of our <a href="http://blog.apps.chicagotribune.com/2010/03/08/advanced-django-project-layout/">newsapps Django project layout</a>, (which is now part of Gareth Rushgrove's <a href="https://github.com/garethr/django-project-templates/">django-project-tempalates</a>). Using this base for a project provides extensive infrastructure for doing robust deployments including isolated configuration, stable branch handling, deployment of static assets to S3, and an extensive fabric deployment script.
 
-There are there options for deployment:
+Thus, there are three options for deployment:
 
 * Our project template is tightly integrated with our <a href="http://blog.apps.chicagotribune.com/2010/02/17/our-geodjango-amazon-ec2-image-for-news-apps/">GeoDjango Amazon EC2 image</a>. So for the quickest possible deployment, you can deploy to that image and be up and running very quickly.
 
-* Alternatively, you should be able to modify the appropriate paths in both the relevant configuration files, found in <pre>boundaryservice/configs</pre> and in <pre>fabfile.py</pre> to deploy the site to any architecture.
+* Alternatively, you should be able to modify the appropriate paths in both the relevant configuration files, found in boundaryservice/configs and in fabfile.py to deploy the site to any architecture.
 
 * If neither of those ideas appeal to you, it should be reasonably straight-forward to simply remove the "api" app from this project and migrate it into your own project template. (Note: this will make us cry.)
 
