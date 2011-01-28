@@ -287,6 +287,10 @@ function use_current_location() {
     geolocate();
 }
 
+function use_tribune_tower() {
+    process_location(41.890422, -87.623702);
+}
+
 function toggle_alt_addresses() {
     alt_adds_div = $('#alt-addresses');
     if (alt_adds_div.is(':hidden')) {
@@ -323,6 +327,7 @@ $(document).ready(function() {
     $('body').click(hide_alt_addresses);
     $('#not-where-i-am').click(not_where_i_am);
     $('#use-current-location').click(use_current_location);
+    $('#use-tribune-tower').click(use_tribune_tower);
     $('#did-you-mean').click(function(e) { e.stopPropagation(); toggle_alt_addresses(); });
     $('#location-form input[type=text]').focus(search_focused);
     $('#location-form').submit(address_search)
