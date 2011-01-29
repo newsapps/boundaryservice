@@ -4,6 +4,7 @@ var geocoder = new google.maps.Geocoder();
 var southwest_limit = new google.maps.LatLng(36.970298, -91.513079);
 var northeast_limit = new google.maps.LatLng(42.508338, -87.019935);
 var bounding_box = new google.maps.LatLngBounds(southwest_limit, northeast_limit);
+var outside_il = false; // until prove true
 
 var map = null;
 
@@ -93,8 +94,10 @@ function geolocate() {
 
 function geolocation_success(position) {
     process_location(position.coords.latitude, position.coords.longitude)
+    lat_lng = new google.maps.LatLng(position.coords.latitude, position.coords.longitude);
 
-    geocode(new google.maps.LatLng(position.coords.latitude, position.coords.longitude))
+    geocode(lat_lng);
+    check_for_illinois(lat_lng);
     hide_search()
 }
 
@@ -140,8 +143,10 @@ function check_saved_location() {
 function check_for_illinois(center) {
     if (!bounding_box.contains(center) && window.location.hash == "#demo") {
         show_outside_il();
+        outside_il = true;
     } else {
         hide_outside_il();
+        outside_il = false;
     }
 }
 
@@ -284,6 +289,10 @@ function switch_page(page_id) {
     window.location.hash = page_id
 
     if (window.location.hash == "#demo") {
+        if (outside_il) {
+            show_outside_il();
+        }
+
         resize_end_trigger(); 
 
         if (!map) {
@@ -294,6 +303,8 @@ function switch_page(page_id) {
                 geolocate();
             }
         }
+    } else {
+        hide_outside_il();
     }
 }
 
