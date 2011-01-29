@@ -73,6 +73,9 @@ h1, h2, h3, h4, h5 {
     60px  144px  228px  312px  396px  480px  564px  648px  732px  816px  900px  984px  1068px   */
 
 body {
+    #outside-il {
+        width: 1068px;
+    }
     padding: 0px 72px 0;
     width: 1068px;
     form#location-form {
@@ -95,6 +98,9 @@ img::-moz-selection {background: transparent;}
 
 @media only screen and (max-width: 1211px) and (min-width: 768px) {
     body {
+        #outside-il {
+            width: 648px;
+        }
         background: #ffffff;
         padding: 0px 60px 0;
         margin: 0 auto;
@@ -117,6 +123,9 @@ img::-moz-selection {background: transparent;}
 
 @media only screen and (max-width: 767px) and (min-width: 480px) {
     body {
+        #outside-il {
+            width: 396px;
+        }
         padding: 0px 42px 0;
         width: 396px;
         /* Prevents Mobile Safari from bumping up font sizes in landscape */
@@ -138,6 +147,9 @@ img::-moz-selection {background: transparent;}
 
 @media only screen and (max-width: 479px) {
     body {
+        #outside-il {
+            width: 228px;
+        }
         padding: 0px 46px 0;
         width: 228px;
         /* Prevents Mobile Safari from bumping up font sizes in landscape */
@@ -166,6 +178,16 @@ img::-moz-selection {background: transparent;}
         /* stub */
 }
 /* --END Less Framework stuff --- */
+
+#outside-il {
+    line-height: 140%;
+    padding: 10px 0;
+    margin: 0 0 10px 0;
+    background: #f1f1f1;
+    text-align: center;
+    display: none;
+}
+
 
 #wrap {
     margin: 0 auto;

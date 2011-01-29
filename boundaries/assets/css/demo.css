@@ -65,6 +65,8 @@ h1, h2, h3, h4, h5 {
 body {
   padding: 0px 72px 0;
   width: 1068px; }
+  body #outside-il {
+    width: 1068px; }
   body form#location-form input[type="text"] {
     width: 380px; }
 
@@ -92,6 +94,8 @@ img::-moz-selection {
     margin: 0 auto;
     width: 648px;
     -webkit-tap-highlight-color: yellow; }
+    body #outside-il {
+      width: 648px; }
     body form#location-form input[type="text"] {
       width: 380px; } }
 
@@ -106,6 +110,8 @@ img::-moz-selection {
     width: 396px;
     /* Prevents Mobile Safari from bumping up font sizes in landscape */
     -webkit-text-size-adjust: 100%; }
+    body #outside-il {
+      width: 396px; }
     body form#location-form input[type="text"] {
       width: 300px; } }
 
@@ -120,6 +126,8 @@ img::-moz-selection {
     width: 228px;
     /* Prevents Mobile Safari from bumping up font sizes in landscape */
     -webkit-text-size-adjust: 100%; }
+    body #outside-il {
+      width: 228px; }
     body #page-title {
       font-size: 48px;
       line-height: 52px;
@@ -135,6 +143,14 @@ img::-moz-selection {
   /* stub */ }
 
 /* --END Less Framework stuff --- */
+#outside-il {
+  line-height: 140%;
+  padding: 10px 0;
+  margin: 0 0 10px 0;
+  background: #f1f1f1;
+  text-align: center;
+  display: none; }
+
 #wrap {
   margin: 0 auto; }
   #wrap #page-links {

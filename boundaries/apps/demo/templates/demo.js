@@ -30,6 +30,7 @@ function init_map(lat, lng) {
     var center = new google.maps.LatLng(lat, lng);
     map.panTo(center);
 
+    check_for_illinois(center);
     resize_listener(center);
 }
 
@@ -79,11 +80,7 @@ function handle_geocode(results, status) {
 }
 
 function geolocate() {
-    if (check_saved_location()) {
-        last_location = store.get('last_location');
-        
-        geocode(new google.maps.LatLng(last_location[0], last_location[1]));
-    } else if (navigator.geolocation) {
+    if (navigator.geolocation) {
         navigator.geolocation.getCurrentPosition(geolocation_success, geolocation_error);
     } else {
         process_location(41.890498, -87.62361);
@@ -137,6 +134,14 @@ function check_saved_location() {
         return true;
     } else {
         return false;
+    }
+}
+
+function check_for_illinois(center) {
+    if (!bounding_box.contains(center) && window.location.hash == "#demo") {
+        show_outside_il();
+    } else {
+        hide_outside_il();
     }
 }
 
@@ -282,9 +287,23 @@ function switch_page(page_id) {
         resize_end_trigger(); 
 
         if (!map) {
-            geolocate();
+            if (check_saved_location()) {
+                last_location = store.get('last_location');
+                geocode(new google.maps.LatLng(last_location[0], last_location[1]));
+            } else {
+                geolocate();
+            }
         }
     }
+}
+
+
+function show_outside_il() {
+    $('#outside-il').fadeIn(500);
+}
+
+function hide_outside_il() {
+    $('#outside-il').fadeOut(250);
 }
 
 /* DOM EVENT HANDLERS */
