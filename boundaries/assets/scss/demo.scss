@@ -66,18 +66,15 @@ h1, h2, h3, h4, h5 {
     line-height: 18px;
 } 
 
-/*  Default 8-column layout
-    60 px columns, 24 px gutters, 60 px margins, 768 px total
-    ---------------------------------------------------------
-    1     2      3      4      5      6      7      8     
-    60px  144px  228px  312px  396px  480px  564px  648px   */
+/*  Default 13-column layout
+    60 px columns, 24 px gutters, 72 px margins, 1212 px total (extra space for scrollbars)
+    ---------------------------------------------------------------------------------------
+    1     2      3      4      5      6      7      8      9      10     11     12     13
+    60px  144px  228px  312px  396px  480px  564px  648px  732px  816px  900px  984px  1068px   */
 
 body {
-    background: #ffffff;
-    padding: 0px 60px 0;
-    margin: 0 auto;
-    width: 648px;
-    -webkit-tap-highlight-color: rgb(255,255,0);
+    padding: 0px 72px 0;
+    width: 1068px;
     form#location-form {
         input[type="text"] {
             width: 380px;
@@ -90,16 +87,19 @@ body {
 img::selection      {background: transparent;}
 img::-moz-selection {background: transparent;}
 
-/*  13-column layout
-    60 px columns, 24 px gutters, 72 px margins, 1212 px total (extra space for scrollbars)
-    ---------------------------------------------------------------------------------------
-    1     2      3      4      5      6      7      8      9      10     11     12     13
-    60px  144px  228px  312px  396px  480px  564px  648px  732px  816px  900px  984px  1068px   */
+/*  8-column layout
+    60 px columns, 24 px gutters, 60 px margins, 768 px total
+    ---------------------------------------------------------
+    1     2      3      4      5      6      7      8     
+    60px  144px  228px  312px  396px  480px  564px  648px   */
 
-@media only screen and (min-width: 1212px) {
+@media only screen and (max-width: 1211px) and (min-width: 768px) {
     body {
-        padding: 0px 72px 0;
-        width: 1068px;
+        background: #ffffff;
+        padding: 0px 60px 0;
+        margin: 0 auto;
+        width: 648px;
+        -webkit-tap-highlight-color: rgb(255,255,0);
         form#location-form {
             input[type="text"] {
                 width: 380px;
