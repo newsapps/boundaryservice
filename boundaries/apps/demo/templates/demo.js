@@ -132,7 +132,7 @@ function clear_last_location() {
 }
 
 function check_saved_location() {
-    last_location = store.get('last_location');
+    last_location = get_last_location();
     if (last_location) {
         return true;
     } else {
