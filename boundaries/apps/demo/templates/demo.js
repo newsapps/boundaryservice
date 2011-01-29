@@ -68,15 +68,22 @@ function handle_geocode(results, status) {
 
     lat = results[0].geometry.location.lat();
     lng = results[0].geometry.location.lng();
-
+    
+    last_location = [lat, lng];
+    
     normalized_address = results[0].formatted_address;
     $('#location-form #address').val(normalized_address);
     
     process_location(lat, lng);
+    save_last_location(last_location);
 }
 
 function geolocate() {
-    if (navigator.geolocation) {
+    if (check_saved_location()) {
+        last_location = store.get('last_location');
+        
+        geocode(new google.maps.LatLng(last_location[0], last_location[1]));
+    } else if (navigator.geolocation) {
         navigator.geolocation.getCurrentPosition(geolocation_success, geolocation_error);
     } else {
         process_location(41.890498, -87.62361);
@@ -109,6 +116,28 @@ function process_location(lat, lng) {
     init_map(lat, lng);
     show_user_marker(lat, lng);
     get_boundaries(lat, lng);
+}
+
+function save_last_location(location) {
+    store.set('last_location', location);
+}
+
+function get_last_location() {
+    last_location = store.get('last_location');
+    return last_location;
+}
+
+function clear_last_location() {
+    store.remove('last_location');
+}
+
+function check_saved_location() {
+    last_location = store.get('last_location');
+    if (last_location) {
+        return true;
+    } else {
+        return false;
+    }
 }
 
 function alt_addresses(results) {
