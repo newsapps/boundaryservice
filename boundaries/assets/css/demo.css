@@ -64,7 +64,8 @@ h1, h2, h3, h4, h5 {
     60px  144px  228px  312px  396px  480px  564px  648px  732px  816px  900px  984px  1068px   */
 body {
   padding: 0px 72px 0;
-  width: 1068px; }
+  width: 1068px;
+  margin: 0 auto; }
   body #outside-il {
     width: 1068px; }
   body form#location-form input[type="text"] {
@@ -91,7 +92,6 @@ img::-moz-selection {
   body {
     background: #ffffff;
     padding: 0px 60px 0;
-    margin: 0 auto;
     width: 648px;
     -webkit-tap-highlight-color: yellow; }
     body #outside-il {

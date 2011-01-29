@@ -78,6 +78,7 @@ body {
     }
     padding: 0px 72px 0;
     width: 1068px;
+    margin: 0 auto;
     form#location-form {
         input[type="text"] {
             width: 380px;
@@ -103,7 +104,6 @@ img::-moz-selection {background: transparent;}
         }
         background: #ffffff;
         padding: 0px 60px 0;
-        margin: 0 auto;
         width: 648px;
         -webkit-tap-highlight-color: rgb(255,255,0);
         form#location-form {
