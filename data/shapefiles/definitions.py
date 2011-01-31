@@ -18,6 +18,7 @@ SHAPEFILES = {
         'domain': 'Chicago',
         'last_updated': date(2010, 12, 12),
         'href': 'http://www.cityofchicago.org/city/en/depts/doit/supp_info/gis_data.html',
-        'notes': ''
+        'notes': '',
+        'encoding': '' #i.e 'utf-8', leave empty if ascii
     },
 }

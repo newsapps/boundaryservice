@@ -115,10 +115,24 @@ class Command(BaseCommand):
                 metadata = {}
 
                 for field in layer.fields:
-                    metadata[field] = feature.get(field)
+                    
+                    # Decode string fields using encoding specified in definitions config
+                    if config['encoding'] != '':
+                        try:
+                            metadata[field] = feature.get(field).decode(config['encoding'])
+                        # Only strings will be decoded, get value in normal way if int etc.
+                        except AttributeError:
+                            metadata[field] = feature.get(field)
+                    else:
+                        metadata[field] = feature.get(field)
 
                 external_id = config['ider'](feature)
                 feature_name = config['namer'](feature)
+                
+                # If encoding is specified, decode id and feature name
+                if config['encoding'] != '':
+                    external_id = external_id.decode(config['encoding'])
+                    feature_name = feature_name.decode(config['encoding'])
 
                 if config['kind_first']:
                     display_name = '%s %s' % (config['singular'], feature_name)
