@@ -80,9 +80,13 @@ class Command(BaseCommand):
                 log.warn('%s shapefile has multiple layers, using first.' % kind)
 
             layer = datasource[0]
+            if 'srid' in config:
+                layer_srs = SpatialRefSys.objects.get(srid=config['srid']).srs
+            else:
+                layer_srs = layer.srs
 
             # Create a convertor to turn the source data into
-            transformer = CoordTransform(layer.srs, db_srs)
+            transformer = CoordTransform(layer_srs, db_srs)
 
             # Create BoundarySet
             set = BoundarySet.objects.create(
