@@ -80,7 +80,7 @@ class Command(BaseCommand):
                 log.warn('%s shapefile has multiple layers, using first.' % kind)
 
             layer = datasource[0]
-            if 'srid' in config:
+            if 'srid' in config and config['srid']:
                 layer_srs = SpatialRefSys.objects.get(srid=config['srid']).srs
             else:
                 layer_srs = layer.srs

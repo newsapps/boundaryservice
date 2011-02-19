@@ -34,5 +34,8 @@ SHAPEFILES = {
         'notes': '',
         # Encoding of the text fields in the shapefile, i.e. 'utf-8'. If this is left empty 'ascii' is assumed
         'encoding': ''
+        # SRID of the geometry data in the shapefile if it can not be inferred from an accompanying .prj file
+        # This is normally not necessary and can be left undefined or set to an empty string to maintain the default behavior
+        #'srid': ''
     },
 }
