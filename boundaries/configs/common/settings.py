@@ -92,10 +92,9 @@ INSTALLED_APPS = (
     'south',
     'tastypie',
 
-    'newsapps.db',
-    'newsapps.templatelib',
+    'boundaryservice',
+
     'boundaries.apps.api',
-    'boundaries.apps.demo',
 )
 
 # Predefined domain
@@ -127,7 +126,7 @@ OMNITURE_APP_NAME = "Elections application"
 ENABLE_GOOGLE_ANALYTICS = True
 GOOGLE_ANALYTICS_KEY = "UA-9792248-1"
 
-API_DOMAIN = 'localhost:8001'
+API_DOMAIN = 'localhost:8000'
 
 # Logging
 logging.basicConfig(

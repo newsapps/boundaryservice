@@ -9,3 +9,4 @@ python-dateutil
 mimeparse
 lxml
 south==0.7.3
+#django-boundaryservice
