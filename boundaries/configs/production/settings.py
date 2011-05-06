@@ -5,10 +5,16 @@ DEBUG = False
 TEMPLATE_DEBUG = DEBUG
 
 # Database
-DATABASE_HOST = 'TODO'
-DATABASE_PORT = '5432'
-DATABASE_USER = 'boundaries'
-DATABASE_PASSWORD = 'TODO'
+DATABASES = {
+    'default': {
+        'ENGINE': 'django.contrib.gis.db.backends.postgis',
+        'NAME': 'boundaries',
+        'HOST': 'TODO',
+        'PORT': '5432',
+        'USER': 'TODO',
+        'PASSWORD': 'TODO'
+    }
+}
 
 # URL that handles the media served from MEDIA_ROOT. Make sure to use a
 # trailing slash if there is a path component (optional in other cases).

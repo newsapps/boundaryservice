@@ -21,10 +21,14 @@ MANAGERS = ADMINS
 # Note: DATABASE_USER and DATABASE_PASSWORD are defined in the staging and
 # production settings.py files. For local use, either define them in
 # local_settings.py or ignore to use your local user.
-DATABASE_ENGINE = 'postgresql_psycopg2'
-DATABASE_HOST = 'localhost'
-DATABASE_PORT = '5432'
-DATABASE_NAME = 'boundaries'
+DATABASES = {
+    'default': {
+        'ENGINE': 'django.contrib.gis.db.backends.postgis',
+        'NAME': 'boundaries',
+        'HOST': 'localhost',
+        'PORT': '5432'
+    }
+}
 
 # Local time
 TIME_ZONE = 'America/Chicago'
@@ -56,9 +60,9 @@ SECRET_KEY = '&9e%+az2pfb4bq)^_og%txwhz37k8!g#6)tbe-c16^1!l5(04r'
 
 # List of callables that know how to import templates from various sources.
 TEMPLATE_LOADERS = (
-    'django.template.loaders.filesystem.load_template_source',
-    'django.template.loaders.app_directories.load_template_source',
-    'django.template.loaders.eggs.load_template_source',
+    'django.template.loaders.filesystem.Loader',
+    'django.template.loaders.app_directories.Loader',
+    'django.template.loaders.eggs.Loader',
 )
 
 TEMPLATE_CONTEXT_PROCESSORS = (
@@ -94,7 +98,8 @@ INSTALLED_APPS = (
 
     'boundaryservice',
 
-    'boundaries.apps.api',
+    'newsapps.templatelib',
+    'boundaries.apps.demo',
 )
 
 # Predefined domain

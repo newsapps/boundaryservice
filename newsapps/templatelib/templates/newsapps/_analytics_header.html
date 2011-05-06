@@ -1,0 +1,13 @@
+{# Chartbeat #}
+{% if settings.ENABLE_CHARTBEAT %}
+<script type="text/javascript">var _sf_startpt=(new Date()).getTime()</script>
+{% endif %}
+
+{# Google Analytics #}
+{% if settings.ENABLE_GOOGLE_ANALYTICS %}
+<script type="text/javascript">
+    var _gaq = _gaq || [];
+    _gaq.push(['_setAccount', '{{ settings.GOOGLE_ANALYTICS_KEY }}']);
+    _gaq.push(['_trackPageview']);
+</script>
+{% endif %}
