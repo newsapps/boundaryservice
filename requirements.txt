@@ -1,12 +1,7 @@
 fabric==0.9.3
 -e git+https://github.com/django/django.git@1.2.3#egg=django
--e svn+http://geopy.googlecode.com/svn/tags/release-0.93#egg=geopy
 django-debug-toolbar
 psycopg2
 python-memcached
--e git+http://github.com/onyxfish/django-tastypie.git@474e6cbaa9#egg=tastypie
-python-dateutil
-mimeparse
-lxml
 south==0.7.3
-#django-boundaryservice
+django-boundaryservice

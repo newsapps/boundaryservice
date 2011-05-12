@@ -1,8 +1,8 @@
 h1. The Newsapps Boundary Service
 
-The Boundary Service is a ready-to-deploy system for aggregating regional boundary data (from shapefiles) and republishing that data via a RESTful JSON API.  It includes an extensive demo site which demonstrates the functionality of the API using client-side javascript.
+The Boundary Service is a ready-to-deploy system for aggregating regional boundary data (from shapefiles) and republishing that data via a RESTful JSON API. See <a href="http://github.com/onyxfish/django-boundaryservice">django-boundaryservice</a> for more details.
 
-This project is aimed at providing a simple service for newsrooms, open-government hackers and others to centralize and build on regional GIS data.  You can see the instance we've configured for Chicago & Illinois, along with much more detailed information about the API at <a href="http://boundaries.tribapps.com/">http://boundaries.tribapps.com/</a>.
+This repository provides a complete and working demo application.
 
 h2. Local setup
 
@@ -24,12 +24,11 @@ Finally, you will need to load some data. The project comes with one example dat
 
 In the future, you can load only specific shapefiles by passing the -o flag with a comma-delimited list of Boundary Sets (whitespace in the the Boundary Set's names is collapsed).  You can also reload boundary sets (clearing existing data) by passing the -c flag. Combine the two flags to clear and reload only specific datasets.
 
-To run the service locally you will need to run two commands in separate terminals, one to run the api and another to run the demo application.
+To run the service locally run:
 
-<pre>./runapi</pre>
 <pre>./manage runserver</pre>
 
-Once those commands are running you should be able to visit <a href="http://localhost:8000/">http://localhost:8000/</a> to see the demo site, which will be making AJAX requests to <a href="http://localhost:8001/1.0/">http://localhost:8001/1.0/</a> for boundary data. To see the API in action try a url such as <a href="http://localhost:8001/1.0/boundary-set/">http://localhost:8001/1.0/boundary-set/</a>.
+Once that command is running you should be able to visit <a href="http://localhost:8000/">http://localhost:8000/</a> to see the demo site. To see the API in action try a url such as <a href="http://localhost:8000/1.0/boundary-set/">http://localhost:8000/1.0/boundary-set/</a>.
 
 h2. Remote setup (deployment)
 
