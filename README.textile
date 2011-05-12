@@ -1,6 +1,12 @@
 h1. The Newsapps Boundary Service
 
-The Boundary Service is a ready-to-deploy system for aggregating regional boundary data (from shapefiles) and republishing that data via a RESTful JSON API. See <a href="http://github.com/onyxfish/django-boundaryservice">django-boundaryservice</a> for more details.
+The Boundary Service is a ready-to-deploy system for aggregating regional boundary data (from shapefiles) and republishing that data via a RESTful JSON API.
+
+*PLEASE NOTE!*
+
+This project used to contain the complete boundary service code, however it now only contains the runnable demo. The boundary service itself is now available as a self-contained Django app.
+
+See <a href="http://github.com/onyxfish/django-boundaryservice">django-boundaryservice</a> for more details.
 
 This repository provides a complete and working demo application.
 
