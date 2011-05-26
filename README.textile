@@ -1,6 +1,6 @@
 h2. **This project is deprecated.**
 
-The Newsapps Boundary Service is now available as an installable project that can be used in any Django project:
+The Newsapps Boundary Service is now available as an pip-installable Django app that can be used in any Django project:
 
 **"django-boundaryservice":http://github.com/newsapps/django-boundaryservice**
 
